@@ -68,6 +68,9 @@ exclude:
   - vendor/ruby/
   - README.md
   - LICENSE
+  - CUSTOMIZATION.md
+  - DEPLOYMENT.md
+  - QUICKSTART.md
 
 # Sass settings
 sass:
