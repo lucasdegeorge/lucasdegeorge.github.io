@@ -1,0 +1,24 @@
+# Publications Database
+# Add new publications here - they will automatically appear on the website
+# Publications are automatically grouped by year and sorted in reverse chronological order
+
+- title: "How far can we go with ImageNet for text-to-image generation?"
+  authors:
+    - name: "Lucas Degeorge"
+    - name: "Arijit Ghosh"
+      url: "https://arijit-hub.github.io/"
+    - name: "Nicolas Dufour"
+      url: "https://nicolas-dufour.github.io/"
+    - name: "David Picard"
+      url: "https://davidpicard.github.io/"
+    - name: "Vicky Kalogeiton"
+      url: "https://vicky.kalogeiton.info/"
+  venue: "arXiv preprint"
+  year: 2025
+  thumbnail: "/assets/images/publications/t2i-imagenet.jpg"
+  links:
+    project: "https://lucasdegeorge.github.io/projects/t2i_imagenet/"
+    paper: "https://arxiv.org/pdf/2502.21318"
+    code: "https://github.com/lucasdegeorge/T2I-ImageNet/tree/main"
+    model: "https://huggingface.co/Lucasdegeorge/models"
+    dataset: "https://huggingface.co/arijitghosh/datasets"

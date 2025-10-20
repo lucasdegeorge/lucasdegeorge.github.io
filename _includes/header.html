@@ -1,0 +1,31 @@
+<header class="site-header">
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+      
+      <ul class="nav-menu">
+        <li><a href="{{ '/#about' | relative_url }}">About</a></li>
+        <li><a href="{{ '/#news' | relative_url }}">News</a></li>
+        <li><a href="{{ '/#publications' | relative_url }}">Publications</a></li>
+        <li><a href="{{ '/projects/' | relative_url }}" {% if page.url contains '/projects' %}class="active"{% endif %}>Projects</a></li>
+        <!-- <li><a href="{{ '/#teaching' | relative_url }}">Teaching</a></li> -->
+        <!-- <li><a href="{{ '/#opensource' | relative_url }}">Open Source</a></li> -->
+      </ul>
+      
+      {% if site.dark_mode %}
+      <button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      {% endif %}
+    </div>
+  </nav>
+</header>

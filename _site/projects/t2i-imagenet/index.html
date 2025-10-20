@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How far can we go with ImageNet for Text-to-Image generation? | Lucas Degeorge</title>
+  <meta name="description" content="PhD student in Computer Vision and Generative Modeling.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/projects/t2i-imagenet/">
+  <link rel="alternate" type="application/rss+xml" title="Lucas Degeorge" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>How far can we go with ImageNet for Text-to-Image generation? | Lucas Degeorge</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="How far can we go with ImageNet for Text-to-Image generation?" />
+<meta name="author" content="Lucas Degeorge" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="PhD student in Computer Vision and Generative Modeling." />
+<meta property="og:description" content="PhD student in Computer Vision and Generative Modeling." />
+<link rel="canonical" href="http://localhost:4000/projects/t2i-imagenet/" />
+<meta property="og:url" content="http://localhost:4000/projects/t2i-imagenet/" />
+<meta property="og:site_name" content="Lucas Degeorge" />
+<meta property="og:image" content="http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-02-01T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png" />
+<meta property="twitter:title" content="How far can we go with ImageNet for Text-to-Image generation?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Lucas Degeorge"},"dateModified":"2025-02-01T00:00:00+01:00","datePublished":"2025-02-01T00:00:00+01:00","description":"PhD student in Computer Vision and Generative Modeling.","headline":"How far can we go with ImageNet for Text-to-Image generation?","image":"http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/t2i-imagenet/"},"url":"http://localhost:4000/projects/t2i-imagenet/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+  <header class="site-header">
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="site-title">Lucas Degeorge</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+      
+      <ul class="nav-menu">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#news">News</a></li>
+        <li><a href="/#publications">Publications</a></li>
+        <li><a href="/projects/" class="active">Projects</a></li>
+        <!-- <li><a href="/#teaching">Teaching</a></li> -->
+        <!-- <li><a href="/#opensource">Open Source</a></li> -->
+      </ul>
+      
+      
+      <button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      
+    </div>
+  </nav>
+</header>
+
+  
+  <main class="container">
+    <article class="project">
+  <header class="project-header">
+    <h1>How far can we go with ImageNet for Text-to-Image generation?</h1>
+    
+    <p class="subtitle">Training high-quality text-to-image generation models with 1/10th the parameters, 1/1000th the training images, in about 500 H100 hours</p>
+    
+    
+    <div class="project-meta">
+      
+      <span class="date">February 2025</span>
+      
+      
+      
+      <a href="https://github.com/lucasdegeorge/T2I-ImageNet" class="project-link" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 16 16" width="16" height="16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        GitHub
+      </a>
+      
+      
+      
+      <a href="https://arxiv.org/abs/2502.21318" class="project-link" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 16 16" width="16" height="16"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-9a.75.75 0 010-1.5h9a.25.25 0 00.25-.25V4.664a.25.25 0 00-.073-.177L11.513 1.573a.25.25 0 00-.177-.073H5.75a.25.25 0 00-.25.25v2.5a.75.75 0 01-1.5 0v-2.5z"></path><path d="M1.5 8.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8A.75.75 0 011.5 8.5zM1.5 11.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8a.75.75 0 01-.75-.75z"></path></svg>
+        Paper
+      </a>
+      
+      
+      
+      
+      
+      <a href="https://huggingface.co/Lucasdegeorge/CAD-I" class="project-link" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        Models
+      </a>
+      
+      
+      
+      <a href="https://huggingface.co/arijitghosh/datasets" class="project-link" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        Datasets
+      </a>
+      
+    </div>
+  </header>
+  
+  <div class="project-content">
+    <div class="project-image-header">
+  <img src="/assets/images/projects/t2i_imagenet/teaser.png" alt="T2I-ImageNet Teaser" class="img-fluid" />
+</div>
+
+<div class="project-authors">
+  <a href="https://lucasdegeorge.github.io/">Lucas Degeorge</a>, 
+  <a href="https://arijit-hub.github.io/">Arijit Ghosh</a>, 
+  <a href="https://nicolas-dufour.github.io/">Nicolas Dufour</a>, 
+  <a href="https://vicky.kalogeiton.info/">Vicky Kalogeiton</a>, 
+  <a href="https://davidpicard.github.io/">David Picard</a>
+</div>
+
+<h2 id="overview">Overview</h2>
+
+<p>The common belief in text-to-image (T2I) generation is that larger training datasets lead to better performance, pushing the field towards billion-scale datasets. However, this “bigger is better” approach often overlooks data efficiency, reproducibility, and accessibility, as many large datasets are closed-source or decay over time.</p>
+
+<p><strong>Our work challenges this paradigm.</strong> We demonstrate that it’s possible to match or even outperform models trained on massive web-scraped collections by using <strong>only ImageNet</strong>, a widely available and standardized dataset. By enhancing ImageNet with carefully designed text and image augmentations, our approach achieves:</p>
+
+<ul>
+  <li>A <strong>+6% overall score over SD-XL on GenEval</strong> and <strong>+5% on DPGBench</strong>, using models with just <strong>1/10th the parameters</strong> and trained on <strong>1/1000th the number of images</strong>.</li>
+  <li>Our models (300M-400M parameters) can be trained with a significantly reduced compute budget (around <strong>500 H100 hours</strong>).</li>
+  <li>We also show successful scaling to higher resolution (512x512 and 1024x1024) generation under these constraints.</li>
+</ul>
+
+<p>This research opens avenues for more reproducible and accessible T2I research, enabling more teams to contribute to the field without requiring massive compute resources or proprietary datasets. All our training data, code, and models are openly available.</p>
+
+<h2 id="adopting-imagenet-for-text-to-image-generation">Adopting ImageNet for Text-to-Image Generation</h2>
+
+<h4 id="1-long-informative-captions">1. Long Informative Captions</h4>
+
+<p>ImageNet’s original labels are simple class names, but the images contain rich visual information. We generate highly detailed captions that describe those images.</p>
+
+<h4 id="2-image-augmentations-to-reduce-overfitting-and-increase-compositionality">2. Image Augmentations to Reduce Overfitting and Increase Compositionality</h4>
+
+<p>Models trained on ImageNet (even with text augmentation) can suffer from early overfitting due to its relatively small scale (1.2M images) and struggle with complex compositions due to its object-centric nature. We implement two Image Augmentation (IA) methods (CutMix and Crop) to mitigate those issues.</p>
+
+<p>These IA strategies, when combined with text augmentation (TA+IA), demonstrably reduce overfitting and significantly improve compositional reasoning (+7 points on GenEval’s “Two Objects” sub-task).</p>
+
+<div class="project-image">
+  <img src="/assets/images/projects/t2i_imagenet/ta_tapia_comp.png" alt="Qualitative comparison across models" class="img-fluid" />
+  <p class="image-caption">
+     Qualitative comparison: Text-Augmentation (TA, first, third columns) vs Text+Image Augmentation (TA+IA second, last columns) for four prompts. 
+  </p>
+</div>
+
+<h2 id="comparison-with-state-of-the-art">Comparison with State-of-the-Art</h2>
+
+<p>We compare our $512^2$ resolution model against the state-of-the-art. Despite using significantly fewer resources (parameters and training data), its demonstrates strong performance compared to established large-scale models.</p>
+
+<div class="project-image">
+  <img src="/assets/images/projects/t2i_imagenet/bubble_plot.png" alt="Quantitative results on GenEval and DPGBench" class="img-fluid" />
+  <p class="image-caption">
+    Quantitative results on GenEval (left) and DPGBench (right). The size of the bubble represents the number of parameters. Our models (labeled "Ours") achieve superior or comparable performance to much larger models trained on vastly more data.
+  </p>
+</div>
+
+<h2 id="gallery">Gallery</h2>
+
+<div class="carousel-container">
+  <div class="carousel-wrapper">
+    <div class="carousel-slides">
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0001.png" alt="Generated image 1" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0002.png" alt="Generated image 2" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0003.png" alt="Generated image 3" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0004.png" alt="Generated image 4" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0005.png" alt="Generated image 5" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0006.png" alt="Generated image 6" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0007.png" alt="Generated image 7" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0008.png" alt="Generated image 8" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0009.png" alt="Generated image 9" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0010.png" alt="Generated image 10" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0011.png" alt="Generated image 11" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0012.png" alt="Generated image 12" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0013.png" alt="Generated image 13" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0014.png" alt="Generated image 14" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0015.png" alt="Generated image 15" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0016.png" alt="Generated image 16" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0017.png" alt="Generated image 17" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0018.png" alt="Generated image 18" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0019.png" alt="Generated image 19" loading="lazy" />
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="/assets/images/projects/t2i_imagenet/carousel/0020.png" alt="Generated image 20" loading="lazy" />
+      </div>
+      
+    </div>
+    
+    <button class="carousel-button prev" aria-label="Previous slide">‹</button>
+    <button class="carousel-button next" aria-label="Next slide">›</button>
+    
+    <div class="carousel-counter">1 / 20</div>
+    
+    <div class="carousel-indicators">
+      
+      <button class="carousel-indicator" aria-label="Go to slide 1"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 2"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 3"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 4"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 5"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 6"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 7"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 8"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 9"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 10"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 11"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 12"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 13"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 14"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 15"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 16"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 17"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 18"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 19"></button>
+      
+      <button class="carousel-indicator" aria-label="Go to slide 20"></button>
+      
+    </div>
+  </div>
+  <p class="image-caption">
+    Example generations from our models following various text prompts. Use arrow buttons or swipe to navigate through the gallery.
+  </p>
+</div>
+
+<h2 id="task-specific-finetuning-aesthetic-quality">Task Specific Finetuning: Aesthetic Quality</h2>
+
+<p>We demonstrate that our models can be effectively finetuned for specific tasks. Below, we compare our aesthetically-finetuned model against state-of-the-art models (SD-XL, PixArt, SD3-Medium) on the same prompts.</p>
+
+<div class="comparison-carousel-container">
+  <div class="comparison-carousel-wrapper">
+    <div class="comparison-carousel-slides">
+      
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000006.jpg" alt="Our model - 000006" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000006.png" alt="SD-XL - 000006" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000006.png" alt="PixArt - 000006" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000006.png" alt="SD3-Medium - 000006" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000012.jpg" alt="Our model - 000012" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000012.png" alt="SD-XL - 000012" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000012.png" alt="PixArt - 000012" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000012.png" alt="SD3-Medium - 000012" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000018.jpg" alt="Our model - 000018" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000018.png" alt="SD-XL - 000018" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000018.png" alt="PixArt - 000018" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000018.png" alt="SD3-Medium - 000018" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000028.jpg" alt="Our model - 000028" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000028.png" alt="SD-XL - 000028" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000028.png" alt="PixArt - 000028" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000028.png" alt="SD3-Medium - 000028" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000034.jpg" alt="Our model - 000034" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000034.png" alt="SD-XL - 000034" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000034.png" alt="PixArt - 000034" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000034.png" alt="SD3-Medium - 000034" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000040.jpg" alt="Our model - 000040" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000040.png" alt="SD-XL - 000040" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000040.png" alt="PixArt - 000040" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000040.png" alt="SD3-Medium - 000040" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000050.jpg" alt="Our model - 000050" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000050.png" alt="SD-XL - 000050" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000050.png" alt="PixArt - 000050" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000050.png" alt="SD3-Medium - 000050" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000056.jpg" alt="Our model - 000056" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000056.png" alt="SD-XL - 000056" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000056.png" alt="PixArt - 000056" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000056.png" alt="SD3-Medium - 000056" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000058.jpg" alt="Our model - 000058" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000058.png" alt="SD-XL - 000058" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000058.png" alt="PixArt - 000058" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000058.png" alt="SD3-Medium - 000058" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="comparison-carousel-slide">
+        <div class="comparison-image-container ours">
+          <div class="comparison-image-label">Ours</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000088.jpg" alt="Our model - 000088" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD-XL</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000088.png" alt="SD-XL - 000088" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">PixArt</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000088.png" alt="PixArt - 000088" loading="lazy" />
+          </div>
+        </div>
+        
+        <div class="comparison-image-container">
+          <div class="comparison-image-label">SD3-Medium</div>
+          <div class="comparison-image-wrapper">
+            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000088.png" alt="SD3-Medium - 000088" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <button class="comparison-carousel-button prev" aria-label="Previous comparison">‹</button>
+    <button class="comparison-carousel-button next" aria-label="Next comparison">›</button>
+    
+    <div class="comparison-carousel-counter">1 / 10</div>
+    
+    <div class="comparison-carousel-indicators">
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 1"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 2"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 3"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 4"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 5"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 6"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 7"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 8"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 9"></button>
+      
+      <button class="comparison-carousel-indicator" aria-label="Go to comparison 10"></button>
+      
+    </div>
+  </div>
+  <p class="image-caption">
+    Side-by-side comparison of our aesthetically-finetuned model against state-of-the-art T2I models. Our model (highlighted) shows competitive or superior visual quality despite being trained on significantly less data. Use arrow buttons to navigate through different prompts.
+  </p>
+</div>
+
+<h2 id="bibtex">BibTeX</h2>
+
+<div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@article</span><span class="p">{</span><span class="nl">degeorge2025farimagenettexttoimagegeneration</span><span class="p">,</span> 
+     <span class="na">title</span>           <span class="p">=</span><span class="s">{How far can we go with ImageNet for Text-to-Image generation?}</span><span class="p">,</span> 
+     <span class="na">author</span>          <span class="p">=</span><span class="s">{Lucas Degeorge and Arijit Ghosh and Nicolas Dufour and David Picard and Vicky Kalogeiton}</span><span class="p">,</span> 
+     <span class="na">year</span>            <span class="p">=</span><span class="s">{2025}</span><span class="p">,</span> 
+     <span class="na">journal</span>         <span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>This work was granted access to the HPC resources of IDRIS under the allocation 2025-AD011015436 and 2025-AD011015594 made by GENCI, and by the SHARP ANR project ANR-23-PEIA-0008 funded in the context of the France 2030 program. The authors would like to thank Alexei A. Efros, Thibaut Loiseau, Yannis Siglidis, Yohann Perron, Louis Geist, Robin Courant and Sinisa Stekovic for their insightful comments, suggestions, and discussions.</p>
+
+<hr />
+
+<p><em>Published: February 2025</em></p>
+
+  </div>
+</article>
+
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Lucas Degeorge. All rights reserved.</p>
+    <div class="footer-links">
+      
+      <a href="mailto:lucas.degeorge@polytechnique.edu" aria-label="Email" title="Email">
+        <svg viewBox="0 0 16 16" width="20" height="20"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5C0 2.784.784 2 1.75 2zM1.5 12.251c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.809L8.38 9.397a.75.75 0 01-.76 0L1.5 5.809v6.442zm13-8.181v-.32a.25.25 0 00-.25-.25H1.75a.25.25 0 00-.25.25v.32L8 7.88l6.5-3.81z"></path></svg>
+      </a>
+      
+      
+      
+      <a href="https://github.com/lucasdegeorge" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 16 16" width="20" height="20"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+      
+      
+      
+      <a href="https://scholar.google.com/citations?user=lucas-degeorge" target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.5 3.5 7.5-5.5 7.5 5.5 4.5-3.5L12 0z" fill="currentColor"/></svg>
+      </a>
+      
+      
+      
+      
+      
+      <a href="https://x.com/lucasdegeorge" target="_blank" rel="noopener" aria-label="Twitter" title="Twitter">
+        <svg viewBox="0 0 16 16" width="20" height="20"><path d="M13.567 5.144c.008.123.008.247.008.371 0 3.796-2.889 8.173-8.172 8.173v-.002A8.131 8.131 0 011 12.398a5.768 5.768 0 004.25-1.19 2.876 2.876 0 01-2.683-1.995c.431.083.875.066 1.297-.05A2.873 2.873 0 011.56 6.348v-.036c.4.222.847.345 1.304.36a2.876 2.876 0 01-.89-3.836 8.152 8.152 0 005.916 3 2.874 2.874 0 014.895-2.619 5.763 5.763 0 001.824-.697 2.883 2.883 0 01-1.262 1.588A5.712 5.712 0 0015 3.656a5.834 5.834 0 01-1.433 1.488z" fill="currentColor"/></svg>
+      </a>
+      
+      
+      
+      <a href="https://bsky.app/profile/lucasdegeorge.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" title="Bluesky">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg>
+      </a>
+      
+      
+      
+      <a href="https://linkedin.com/in/lucas-degeorge-551a861a6" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 16 16" width="20" height="20"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.695-2.165 1.193v.025h-.016a5.54 5.54 0 01.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" fill="currentColor"/></svg>
+      </a>
+      
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

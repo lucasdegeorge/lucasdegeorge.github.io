@@ -1,0 +1,82 @@
+# Site settings
+title: Lucas Degeorge
+email: lucas.degeorge@polytechnique.edu
+description: >-
+  PhD student in Computer Vision and Generative Modeling.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://lucasdegeorge.github.io" # your site URL
+
+# Personal info
+author:
+  name: Lucas Degeorge
+  title: PhD Student
+  affiliation: Ecole polytechnique & Ecole des Ponts
+  photo: /assets/images/profile.jpeg
+  bio: >-
+    I am a PhD student in Computer Vision at [VISTA](https://www.lix.polytechnique.fr/vista/) ([Ecole polytechnique](https://www.polytechnique.edu/en)) and [IMAGINE](https://imagine-lab.enpc.fr/) ([Ecole des Ponts](https://ecoledesponts.fr/)) labs, under the supervision of [Vicky Kalogeiton](https://vicky.kalogeiton.info/) and [David Picard](https://davidpicard.github.io/).
+
+# Social links
+social:
+  email: lucas.degeorge@polytechnique.edu
+  github: lucasdegeorge
+  scholar: lucas-degeorge
+  # orcid: 0000-0000-0000-0000
+  twitter: lucasdegeorge
+  bluesky: lucasdegeorge.bsky.social
+  linkedin: lucas-degeorge-551a861a6
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  news:
+    output: false
+    sort_by: date
+  projects:
+    output: true
+    permalink: /projects/:name/
+  teaching:
+    output: true
+    permalink: /teaching/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+  - scope:
+      path: ""
+      type: "teaching"
+    values:
+      layout: "page"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE
+
+# Sass settings
+sass:
+  style: compressed
+  sass_dir: _sass
+
+# Dark mode
+dark_mode: true
+
+# RSS feed
+feed:
+  path: feed.xml
