@@ -2,6 +2,25 @@
 # Add new publications here - they will automatically appear on the website
 # Publications are automatically grouped by year and sorted in reverse chronological order
 
+- title: "MIRO: MultI-Reward cOnditioned pretraining improves T2I quality and efficiency"
+  authors:
+    - name: "Nicolas Dufour"
+      url: "https://nicolas-dufour.github.io/"
+    - name: "Lucas Degeorge"
+    - name: "Arijit Ghosh"
+      url: "https://arijit-hub.github.io/"
+    - name: "Vicky Kalogeiton"
+      url: "https://vicky.kalogeiton.info/"
+    - name: "David Picard"
+      url: "https://davidpicard.github.io/"
+  venue: "arXiv preprint"
+  year: 2025
+  thumbnail: "/assets/images/publications/miro.jpg"
+  links:
+    project: "https://nicolas-dufour.github.io/miro/"
+    paper: "https://arxiv.org/pdf/2510.25897"
+
+
 - title: "How far can we go with ImageNet for text-to-image generation?"
   authors:
     - name: "Lucas Degeorge"
@@ -22,3 +41,19 @@
     code: "https://github.com/lucasdegeorge/T2I-ImageNet/tree/main"
     model: "https://huggingface.co/Lucasdegeorge/models"
     dataset: "https://huggingface.co/arijitghosh/datasets"
+
+
+- title: "One-step Diffusion Models with Bregman Density Ratio Matching"
+  authors:
+    - name: "Yuanzhi Zhu"
+      url: "https://yuanzhi-zhu.github.io/about/"
+    - name: "Eleftherios Tsonis"
+      url: "https://eleftsonis.github.io/"
+    - name: "Lucas Degeorge"
+    - name: "Vicky Kalogeiton"
+      url: "https://vicky.kalogeiton.info/"
+  venue: "EurIPS 2025 Workshop on Principles of Generative Modeling (PriGM)"
+  year: 2025
+  thumbnail: "/assets/images/publications/bregman.jpg"
+  links:
+    paper: "https://www.arxiv.org/pdf/2510.16983"

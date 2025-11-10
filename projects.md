@@ -10,14 +10,26 @@ permalink: /projects/
   <div class="project-card">
     {% if project.image %}
     <div class="project-image">
+      {% if project.external_url %}
+      <a href="{{ project.external_url }}" target="_blank" rel="noopener">
+        <img src="{{ project.image | relative_url }}" alt="{{ project.title }}">
+      </a>
+      {% else %}
       <a href="{{ project.url | relative_url }}">
         <img src="{{ project.image | relative_url }}" alt="{{ project.title }}">
       </a>
+      {% endif %}
     </div>
     {% endif %}
     
     <div class="project-card-content">
-      <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+      <h3>
+        {% if project.external_url %}
+        <a href="{{ project.external_url }}" target="_blank" rel="noopener">{{ project.title }}</a>
+        {% else %}
+        <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+        {% endif %}
+      </h3>
       
       {% if project.subtitle %}
       <p class="project-subtitle">{{ project.subtitle }}</p>
@@ -26,7 +38,11 @@ permalink: /projects/
       <p class="project-excerpt">{{ project.excerpt | strip_html | truncatewords: 30 }}</p>
       
       <div class="project-links">
+        {% if project.external_url %}
+        <a href="{{ project.external_url }}" target="_blank" rel="noopener" class="read-more">Visit Project Page →</a>
+        {% else %}
         <a href="{{ project.url | relative_url }}" class="read-more">Read More →</a>
+        {% endif %}
         
         {% if project.github %}
         <a href="{{ project.github }}" target="_blank" rel="noopener" class="project-icon" title="GitHub">
