@@ -36,7 +36,7 @@
   year: 2025
   thumbnail: "/assets/images/publications/t2i-imagenet.jpg"
   links:
-    project: "https://lucasdegeorge.github.io/projects/t2i_imagenet/"
+    project: "https://lucasdegeorge.github.io/projects/t2i-imagenet/"
     paper: "https://arxiv.org/pdf/2502.21318"
     code: "https://github.com/lucasdegeorge/T2I-ImageNet/tree/main"
     model: "https://huggingface.co/Lucasdegeorge/models"
