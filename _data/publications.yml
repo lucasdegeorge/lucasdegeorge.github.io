@@ -13,7 +13,7 @@
       url: "https://vicky.kalogeiton.info/"
     - name: "David Picard"
       url: "https://davidpicard.github.io/"
-  venue: "ICML 2026"
+  venue: "ICML"
   year: 2026
   thumbnail: "/assets/images/publications/miro.jpg"
   links:
@@ -43,7 +43,7 @@
     - name: Raphael Baena
     - name: "Elliot Vincent"
     - name: "Loic Landrieu"
-  venue: "CVPR 2026"
+  venue: "CVPR Findings"
   year: 2026
   thumbnail: "/assets/images/publications/teaser_pom.png"
   links:
