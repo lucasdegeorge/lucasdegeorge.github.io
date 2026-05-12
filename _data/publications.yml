@@ -13,12 +13,42 @@
       url: "https://vicky.kalogeiton.info/"
     - name: "David Picard"
       url: "https://davidpicard.github.io/"
-  venue: "arXiv preprint"
-  year: 2025
+  venue: "ICML 2026"
+  year: 2026
   thumbnail: "/assets/images/publications/miro.jpg"
   links:
     project: "https://nicolas-dufour.github.io/miro/"
     paper: "https://arxiv.org/pdf/2510.25897"
+
+
+- title: "PoM: A Linear-Time Replacement for Attention with the Polynomial Mixer"
+  authors:
+    - name: David Picard
+      url: "https://davidpicard.github.io/"
+    - name: "Nicolas Dufour"
+      url: "https://nicolas-dufour.github.io/"
+    - name: "Lucas Degeorge"
+    - name: "Arijit Ghosh"
+      url: "https://arijit-hub.github.io/"
+    - name: "Davide Allegro"
+    - name: "Tom Ravaud"
+    - name: "Yohann Perrion"
+    - name: "Corentin Sautier"
+    - name: "Zeynep Sonat Baltaci"
+    - name: "Fei Meng1"
+    - name: Syrine Kalleli
+    - name: "Marta López-Rauhut"
+    - name: "Thibaut Loiseau"
+    - name: "Ségolène Albouy"
+    - name: Raphael Baena
+    - name: "Elliot Vincent"
+    - name: "Loic Landrieu"
+  venue: "CVPR 2026"
+  year: 2026
+  thumbnail: "/assets/images/publications/teaser_pom.png"
+  links:
+    paper: "https://arxiv.org/pdf/2604.06129"
+    code: "https://github.com/davidpicard/pom"
 
 
 - title: "How far can we go with ImageNet for text-to-image generation?"
