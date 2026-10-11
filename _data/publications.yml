@@ -2,6 +2,55 @@
 # Add new publications here - they will automatically appear on the website
 # Publications are automatically grouped by year and sorted in reverse chronological order
 
+- title: "Dino Forcing Flow Models: Do not denoise what you can predict"
+  authors:
+    - name: "Arijit Ghosh"
+      url: "https://arijit-hub.github.io/"
+      equal: true
+    - name: "Lucas Degeorge"
+      equal: true
+    - name: "Paul Couairon"
+      url: "https://pcouairon.github.io/"
+    - name: "Alexei A. Efros"
+      url: "https://people.eecs.berkeley.edu/~efros/"
+    - name: "Vicky Kalogeiton"
+      url: "https://vicky.kalogeiton.info/"
+    - name: "David Picard"
+      url: "https://davidpicard.github.io/"
+  venue: "arXiv preprint"
+  year: 2026
+  thumbnail: "/assets/images/publications/dino-forcing.jpg"
+  thumbnail_fit: contain   # show the whole figure (wide diagram) instead of cropping it
+  links:
+    paper: "https://arxiv.org/pdf/2610.11751"
+    code: "https://github.com/arijit-hub/dino_forcing"
+
+
+- title: "Balancing Frequencies and Pixels in Flow Matching"
+  selected: true
+  authors:
+    - name: "Lucas Degeorge"
+      equal: true
+    - name: "Paul Couairon"
+      url: "https://pcouairon.github.io/"
+      equal: true
+    - name: "Arijit Ghosh"
+      url: "https://arijit-hub.github.io/"
+      equal: true
+    - name: "Alexei A. Efros"
+      url: "https://people.eecs.berkeley.edu/~efros/"
+    - name: "David Picard"
+      url: "https://davidpicard.github.io/"
+    - name: "Vicky Kalogeiton"
+      url: "https://vicky.kalogeiton.info/"
+  venue: "NeurIPS"
+  year: 2026
+  thumbnail: "/assets/images/publications/floss.jpg"
+  links:
+    project: "/projects/floss/"
+    paper: "https://arxiv.org/pdf/2609.02748"
+
+
 - title: "MIRO: MultI-Reward cOnditioned pretraining improves T2I quality and efficiency"
   authors:
     - name: "Nicolas Dufour"
@@ -19,6 +68,9 @@
   links:
     project: "https://nicolas-dufour.github.io/miro/"
     paper: "https://arxiv.org/pdf/2510.25897"
+    code: "https://github.com/nicolas-dufour/miro"
+    model: "https://huggingface.co/nicolas-dufour/miro"
+    demo: "https://huggingface.co/spaces/nicolas-dufour/miro"
 
 
 - title: "PoM: A Linear-Time Replacement for Attention with the Polynomial Mixer"
@@ -35,7 +87,7 @@
     - name: "Yohann Perrion"
     - name: "Corentin Sautier"
     - name: "Zeynep Sonat Baltaci"
-    - name: "Fei Meng1"
+    - name: "Fei Meng"
     - name: Syrine Kalleli
     - name: "Marta López-Rauhut"
     - name: "Thibaut Loiseau"
@@ -52,10 +104,13 @@
 
 
 - title: "How far can we go with ImageNet for text-to-image generation?"
+  selected: true
   authors:
     - name: "Lucas Degeorge"
+      equal: true
     - name: "Arijit Ghosh"
       url: "https://arijit-hub.github.io/"
+      equal: true
     - name: "Nicolas Dufour"
       url: "https://nicolas-dufour.github.io/"
     - name: "David Picard"
@@ -65,8 +120,9 @@
   venue: "arXiv preprint"
   year: 2025
   thumbnail: "/assets/images/publications/t2i-imagenet.jpg"
+  thumbnail_fit: contain   # teaser figure from the paper, shown whole
   links:
-    project: "https://lucasdegeorge.github.io/projects/t2i-imagenet/"
+    project: "/projects/t2i-imagenet/"
     paper: "https://arxiv.org/pdf/2502.21318"
     code: "https://github.com/lucasdegeorge/T2I-ImageNet/tree/main"
     model: "https://huggingface.co/Lucasdegeorge/models"

@@ -1,0 +1,327 @@
+---
+layout: default
+title: "Balancing Frequencies and Pixels in Flow Matching"
+subtitle: "Learn the frequencies first, then the pixels: a spectrally balanced loss that speeds up pixel-space flow matching"
+description: "Focal Log-Frequency Loss (f-loss) and the fv-loss schedule: a drop-in replacement for flow matching losses that accelerates pixel-space generative models. NeurIPS 2026."
+date: 2026-09-25
+image: /assets/images/publications/floss.jpg
+paper: https://arxiv.org/pdf/2609.02748
+excerpt: "Pixel-space losses are dominated by low frequencies. We introduce the Focal Log-Frequency Loss (f-loss) and a frequency-to-pixel schedule that accelerates the convergence of pixel flow models and reaches state-of-the-art FID on ImageNet, without any architectural change."
+extra_css:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css
+  - /assets/css/floss.css
+extra_js:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js
+  - /assets/js/fl-common.js
+  - /assets/js/floss-data.js
+  - /assets/js/floss.js
+---
+{% assign img = '/assets/images/projects/floss' | relative_url %}
+<div class="fl" data-img-root="{{ img }}">
+
+<!-- ============================== HERO ============================== -->
+<section class="fl-hero">
+  <span class="fl-badge">NeurIPS 2026</span>
+  <h1 class="fl-title">
+    <span class="fl-title-line">Balancing <span class="c-f">Frequencies</span></span>
+    <span class="fl-title-line">and <span class="c-v">Pixels</span> in Flow Matching</span>
+  </h1>
+
+  <p class="fl-authors">
+    <a href="https://lucasdegeorge.github.io/">Lucas Degeorge</a><sup>*1,2,3</sup>,
+    <a href="https://pcouairon.github.io/">Paul Couairon</a><sup>*1</sup>,
+    <a href="https://arijit-hub.github.io/">Arijit Ghosh</a><sup>*1,3</sup>,
+    <a href="https://people.eecs.berkeley.edu/~efros/">Alexei A. Efros</a><sup>4</sup>,
+    <a href="https://davidpicard.github.io/">David Picard</a><sup>&dagger;3</sup>,
+    <a href="https://vicky.kalogeiton.info/">Vicky Kalogeiton</a><sup>&dagger;1</sup>
+  </p>
+  <p class="fl-affils">
+    <sup>1</sup>LIX, &Eacute;cole Polytechnique &nbsp;&middot;&nbsp;
+    <sup>2</sup>AMIAD &nbsp;&middot;&nbsp;
+    <sup>3</sup>LIGM, &Eacute;cole des Ponts &nbsp;&middot;&nbsp;
+    <sup>4</sup>UC Berkeley
+    <br><span class="fl-note"><sup>*</sup>Equal contribution &nbsp; <sup>&dagger;</sup>Equal supervision</span>
+  </p>
+
+  <div class="fl-buttons">
+    <a class="fl-btn" href="https://arxiv.org/abs/2609.02748" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-9a.75.75 0 010-1.5h9a.25.25 0 00.25-.25V4.664a.25.25 0 00-.073-.177L11.513 1.573a.25.25 0 00-.177-.073H5.75a.25.25 0 00-.25.25v2.5a.75.75 0 01-1.5 0v-2.5z"/><path d="M1.5 8.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8A.75.75 0 011.5 8.5zM1.5 11.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8a.75.75 0 01-.75-.75z"/></svg>
+      Paper
+    </a>
+    <a class="fl-btn is-disabled" aria-disabled="true" title="Coming soon">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Code <small>soon</small>
+    </a>
+    <a class="fl-btn" href="#bibtex">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.750v12.5A1.75 1.75 0 0114.25 16H1.75A1.75 1.75 0 010 14.25V1.75zm1.75-.25a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V1.75a.25.25 0 00-.25-.25H1.75zM3.5 4.75A.75.75 0 014.25 4h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3A.75.75 0 014.25 7h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"/></svg>
+      BibTeX
+    </a>
+  </div>
+</section>
+
+<!-- ============================== TL;DR ============================== -->
+<section id="tldr" class="fl-section">
+  <p class="fl-kicker">TL;DR</p>
+  <h2 class="fl-h2">Learn the <span class="c-f">frequencies</span> first, then the <span class="c-v">pixels</span>.</h2>
+  <p class="fl-lead">
+    Natural images put most of their energy in low frequencies, so pixel-space losses spend most of their
+    learning signal there and pick up textures and edges late. We propose the <b>Focal Log-Frequency Loss</b> <b class="c-f">(<i>f</i>-loss)</b>,
+    which balances the training signal across the spectrum, and a schedule (<b class="c-fv"><i>fv</i>-loss</b>) that starts in
+    frequency space and hands over to the standard pixel <b class="c-v"><i>v</i>-loss</b>. It is a drop-in replacement for flow
+    matching losses that <b>speeds up convergence by up to 40%</b> and requires <b>no architectural change</b>.
+  </p>
+</section>
+
+<!-- ============================== GAME ============================== -->
+<section id="game" class="fl-section fl-card">
+  <div class="fl-game-head">
+    <h3>Guess the real image!</h3>
+    <p>
+      Two of these eight images are real ImageNet photos; the other six are generated by a pixel-space model trained with our
+      <b class="c-fv"><i>fv</i>-loss</b>. Click the two you think are real.
+    </p>
+  </div>
+  <div class="fl-game-grid">
+    {% for i in (1..8) %}
+    <button class="fl-game-tile" data-real="{% if i == 3 or i == 7 %}1{% else %}0{% endif %}" aria-label="Image {{ i }}">
+      <img src="{{ img }}/game/{{ i }}.jpg" alt="Sample {{ i }}" loading="lazy">
+      <span class="fl-game-tag"></span>
+    </button>
+    {% endfor %}
+  </div>
+  <div class="fl-game-foot">
+    <span class="fl-game-status">Pick 2 images</span>
+    <button class="fl-chip fl-game-reset" hidden>Play again</button>
+  </div>
+</section>
+
+<!-- ============================== PROBLEM ============================== -->
+<section id="problem" class="fl-section">
+  <p class="fl-kicker">1 &middot; The problem</p>
+  <h2 class="fl-h2">Pixel losses are spectrally biased</h2>
+  <p>
+    Natural images follow a \(1/f^2\) power spectrum: most of the signal energy lies in the low frequencies that describe global structure,
+    while high frequencies carry sparse but structured details such as edges and textures.
+    Flow matching with \(\boldsymbol{x}\)-prediction (as in JiT) trains with a pixel-space regression, the <b class="c-v"><i>v</i>-loss</b>:
+  </p>
+  <div class="fl-eq">\[\mathcal{L}_{\boldsymbol{v}} = \mathbb{E}\left[\tfrac{1}{(1-t)^2}\,\lVert \boldsymbol{x}_\theta(\boldsymbol{x}_t, t) - \boldsymbol{x}_1\rVert^2\right]\]</div>
+  <p>
+    Every pixel error counts the same. By Parseval, this equals a squared error over Fourier coefficients, so the large
+    low-frequency residuals dominate the optimization signal. Pick an image below to see how much each frequency octave
+    contributes to the loss early in training, when the residual is roughly the image itself.
+  </p>
+
+  <div class="fl-card fl-share">
+    <div class="fl-share-side">
+      <img class="fl-share-img" src="{{ img }}/game/3.jpg" alt="Selected image">
+      <div class="fx-thumbs" role="radiogroup" aria-label="Choose an image">
+        <button class="fx-thumb is-active" data-src="{{ img }}/game/3.jpg"><img src="{{ img }}/game/3.jpg" alt="tiger"></button>
+        <button class="fx-thumb" data-src="{{ img }}/game/4.jpg"><img src="{{ img }}/game/4.jpg" alt="hay bale"></button>
+        <button class="fx-thumb" data-src="{{ img }}/game/2.jpg"><img src="{{ img }}/game/2.jpg" alt="thistle"></button>
+      </div>
+    </div>
+    <div class="fl-share-main">
+      <div class="fl-toggle" role="tablist">
+        <button class="is-active" data-mode="v"><i>v</i>-loss (pixels)</button>
+        <button data-mode="f"><i>f</i>-loss (ours)</button>
+      </div>
+      <div class="fl-share-bars"></div>
+      <p class="fl-caption">Share of the training signal per frequency octave, in cycles per image (low &rarr; high).</p>
+    </div>
+  </div>
+
+  <p>
+    This bias shows in what a trained model generates. We compare the radially averaged power spectrum of images from a
+    <span class="c-v"><i>v</i>-loss</span> model with that of real ImageNet images. Low and mid frequencies are overestimated by about 20%,
+    while high frequencies are underestimated, with a deficit that grows toward the Nyquist limit and reaches nearly &minus;60%.
+    The deficit is still there at the end of training.
+  </p>
+  <div class="fl-card">
+    <div class="fl-chart" id="chart-raps"></div>
+    <p class="fl-caption">Relative deviation of the generated power spectrum from real images throughout training (<span class="c-v"><i>v</i>-loss</span>, JiT).</p>
+  </div>
+</section>
+
+<!-- ============================== METHOD ============================== -->
+<section id="method" class="fl-section">
+  <p class="fl-kicker">2 &middot; Method</p>
+  <h2 class="fl-h2">The Focal Log-Frequency Loss</h2>
+  <p>We compute the residual in the Fourier domain, with \(e_{u,v} = |\mathcal{F}_\text{pred}(u,v) - \mathcal{F}_\text{target}(u,v)|\), and reweight it:</p>
+  <div class="fl-eq">\[\mathcal{L}_{\boldsymbol{f}} = \sum_{u,v}\; \underbrace{\frac{1}{(1-t)^2}}_{\text{timestep weight}} \cdot \underbrace{\frac{\operatorname{sg}(e_{u,v})}{\max_{u',v'} e_{u',v'}}}_{\text{adaptive focal weight}} \cdot \underbrace{\log\left(1 + e_{u,v}\right)}_{\text{log compression}}\]</div>
+  <ul class="fl-list">
+    <li><b>Timestep weight:</b> inherited unchanged from the <span class="c-v"><i>v</i>-loss</span>, so the dynamics across timesteps stay the same.</li>
+    <li><b>Adaptive focal weight:</b> each per-frequency residual is normalized by the largest residual, under a stop-gradient. This avoids wide variations in magnitude between samples.</li>
+    <li><b>Log compression:</b> prevents any single frequency from monopolizing the loss. Like a continuous Laplacian pyramid, it gives every doubling of frequency equal weight.</li>
+  </ul>
+
+  <h2 class="fl-h2 fl-h2-gap">Frequencies converge first, pixels catch up</h2>
+  <p>
+    The <span class="c-f"><i>f</i>-loss</span> dominates early in training and converges significantly faster than the <span class="c-v"><i>v</i>-loss</span>.
+    However, the <span class="c-v"><i>v</i>-loss</span> surpasses the <span class="c-f"><i>f</i>-loss</span> later in training. The <span class="c-f"><i>f</i>-loss</span> is insensitive to phase,
+    which carries the exact spatial location of edges and textures, while the <span class="c-v"><i>v</i>-loss</span> directly supervises pixel values and is better
+    suited to locking sharp edges into exact pixel locations. Frequency supervision is the binding constraint early on, and pixel
+    supervision becomes more effective as training progresses.
+  </p>
+  <div class="fl-card">
+    <div class="fl-chart" id="chart-vf"></div>
+    <p class="fl-caption">Guided FID during training, JiT-B/16 on ImageNet 256².</p>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">From frequencies to pixels: the <span class="c-fv"><i>fv</i>-loss</span></h2>
+  <p>
+    We combine both objectives with a sigmoid schedule \(\lambda(s)\) that decays from 1 to 0 and is centered at the observed crossover point \(s^\star\):
+  </p>
+  <div class="fl-eq">\[\mathcal{L} = \lambda(s)\,\mathcal{L}_{\boldsymbol{f}} + \big(1-\lambda(s)\big)\,\mathcal{L}_{\boldsymbol{v}}\]</div>
+
+  <div class="fl-card fl-schedule">
+    <div class="fl-sched-grid">
+      <div><h4>Guided FID (JiT-B/16, ImageNet 256²)</h4><div class="fl-chart" id="chart-long"></div></div>
+      <div><h4>Loss weights</h4><div class="fl-chart" id="chart-sched"></div></div>
+    </div>
+    <div class="fl-scrub">
+      <button class="fl-play" aria-label="Play">&#9654;</button>
+      <input type="range" class="fl-scrub-range" min="79" max="319" value="79" step="1" aria-label="Training epoch">
+      <span class="fl-scrub-label">epoch 79</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== EVOLUTION ============================== -->
+<section id="evolution" class="fl-section">
+  <p class="fl-kicker">3 &middot; Watching models learn</p>
+  <h2 class="fl-h2">Textures appear tens of thousands of steps earlier</h2>
+  <p>Same class, same seed, same architecture; only the loss differs. Scrub through early training.
+    The <span class="c-f"><i>f</i>-loss</span> model renders the hay on the thatched roof and the knit of the mittens early, while the
+    <span class="c-v"><i>v</i>-loss</span> model first concentrates on sharp object boundaries.</p>
+
+  <div class="fl-card fl-evo">
+    <div class="fl-evo-tabs" role="tablist">
+      <button class="fl-chip is-active" data-cls="class853seed456">Thatched roof</button>
+      <button class="fl-chip" data-cls="class658seed98">Mitten</button>
+      <button class="fl-chip" data-cls="class292seed42">Tiger</button>
+      <button class="fl-chip" data-cls="class780seed709">Schooner</button>
+      <button class="fl-chip" data-cls="class12seed12">House finch</button>
+    </div>
+    <div class="fl-evo-pair">
+      <figure><div class="fl-evo-frame"><img class="fl-evo-v" alt="v-loss sample"></div><figcaption class="c-v"><i>v</i>-loss</figcaption></figure>
+      <figure><div class="fl-evo-frame"><img class="fl-evo-f" alt="f-loss sample"></div><figcaption class="c-f"><i>f</i>-loss</figcaption></figure>
+    </div>
+    <div class="fl-scrub">
+      <button class="fl-play fl-evo-play" aria-label="Play">&#9654;</button>
+      <input type="range" class="fl-evo-range" min="0" max="6" value="0" step="1" aria-label="Training step">
+      <span class="fl-scrub-label fl-evo-label">40k steps</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== RESULTS ============================== -->
+<section id="results" class="fl-section">
+  <p class="fl-kicker">4 &middot; Results</p>
+
+  <h2 class="fl-h2">Wall-clock speed-up</h2>
+  <p>
+    The <span class="c-f"><i>f</i>-loss</span> computes a 2D FFT at every training step, which adds computational overhead. To check that this does not cancel
+    the convergence speed-up, we measure the total wall-clock time for training JiT-B for 400k steps. Compared to the
+    <span class="c-v"><i>v</i>-loss</span> baseline (432.0 min), the <span class="c-f"><i>f</i>-loss</span> adds +4% (453.1 min) and the
+    <span class="c-fv"><i>fv</i>-loss</span> adds +14% (492.3 min), since it computes and backpropagates both losses at each step.
+    At the 100-minute mark, the <span class="c-v"><i>v</i>-loss</span> is temporarily ahead because the <span class="c-fv"><i>fv</i>-loss</span> has completed fewer steps (78k vs. 90k).
+    The <span class="c-fv"><i>fv</i>-loss</span> overtakes it by the 200-minute mark, and from 300 minutes onward its convergence speed-up more than compensates for the added cost.
+  </p>
+  <div class="fl-card">
+    <div class="fl-chart" id="chart-wall"></div>
+    <p class="fl-caption">Guided FID vs. wall-clock training time, JiT-B/16. Labels give the training step reached at 400 minutes.</p>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">Convergence across model sizes</h2>
+  <p>
+    FID across training epochs for JiT-B/16, JiT-L/16 and JiT-XL/16, in both unguided and guided settings.
+    The <span class="c-fv"><i>fv</i>-loss</span> outperforms the <span class="c-v"><i>v</i>-loss</span> baseline across all model sizes from the earliest evaluations.
+    The gap is largest in the early epochs and narrows as training progresses, consistent with our observation that frequency supervision is most valuable early in training.
+  </p>
+  <div class="fl-card">
+    <div class="fl-speed-head">
+      <span class="fl-legend"><span class="sw" style="background:var(--fl-v)"></span><span><i>v</i>-loss</span><span class="sw" style="background:var(--fl-fv)"></span><span><i>fv</i>-loss</span></span>
+      <div class="fl-toggle fl-toggle-sm fl-speed-guid">
+        <button class="is-active" data-g="u">Unguided</button>
+        <button data-g="g">Guided</button>
+      </div>
+    </div>
+    <div class="fl-speed-grid">
+      <div><h4>JiT-B/16</h4><div class="fl-chart" id="chart-speed-B"></div></div>
+      <div><h4>JiT-L/16</h4><div class="fl-chart" id="chart-speed-L"></div></div>
+      <div><h4>JiT-XL/16</h4><div class="fl-chart" id="chart-speed-XL"></div></div>
+    </div>
+    <p class="fl-caption">ImageNet 256². The arrow shows the speed-up of the <span class="c-fv"><i>fv</i>-loss</span> to reach the FID of the <span class="c-v"><i>v</i>-loss</span> at epoch 100 (dashed line).</p>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">Spectral error across training</h2>
+  <p>
+    We measure the average magnitude error between generated and real images in the low- and high-frequency bands of the Fourier spectrum.
+    In the earliest stages of training (50k&ndash;75k steps), the <span class="c-f"><i>f</i>-loss</span> has a lower error than the <span class="c-v"><i>v</i>-loss</span> in both bands,
+    confirming that it corrects the spectral bias faster. As training progresses, the <span class="c-f"><i>f</i>-loss</span> plateaus and is eventually overtaken by the
+    <span class="c-v"><i>v</i>-loss</span>. The <span class="c-fv"><i>fv</i>-loss</span> combines the fast early spectral alignment of the <span class="c-f"><i>f</i>-loss</span>
+    with the late-stage refinement of the <span class="c-v"><i>v</i>-loss</span>, and reaches the lowest error in both bands by the end of training.
+  </p>
+  <div class="fl-card">
+    <div class="fl-two fl-two-tight">
+      <div><h4>Low frequencies</h4><div class="fl-chart" id="chart-band-low"></div></div>
+      <div><h4>High frequencies</h4><div class="fl-chart" id="chart-band-high"></div></div>
+    </div>
+    <p class="fl-caption">Average magnitude error between generated and real spectra during training, JiT-B/16.</p>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">State of the art in pixel space</h2>
+  <p>Class-conditional ImageNet 256², XL/16 models. The same loss improves every family of methods (plain, with REPA alignment, and with perceptual losses), either with a better FID or with the same FID in fewer steps.</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Method</th><th>REPA</th><th>Perceptual</th><th>Steps</th><th>FID &darr;</th><th>IS &uarr;</th></tr></thead>
+      <tbody>
+        <tr><td>JiT-XL/16</td><td></td><td></td><td>750k</td><td>2.21</td><td><b>297.4</b></td></tr>
+        <tr class="is-ours"><td>Ours</td><td></td><td></td><td>750k</td><td><b>2.13</b></td><td>290.3</td></tr>
+        <tr class="fl-sep"><td colspan="6"></td></tr>
+        <tr><td>EPG</td><td>&check;</td><td></td><td>1M</td><td>2.04</td><td>283.2</td></tr>
+        <tr><td>PixelFlow <small>(XL/4)</small></td><td>&check;</td><td></td><td>1.6M</td><td>1.98</td><td>282.1</td></tr>
+        <tr><td>DiP</td><td>&check;</td><td></td><td>1.6M</td><td>1.98</td><td>282.9</td></tr>
+        <tr><td>PixNerd</td><td>&check;</td><td></td><td>1.6M</td><td>1.95</td><td>298.0</td></tr>
+        <tr><td>DeCo</td><td>&check;</td><td></td><td>1.6M</td><td>1.90</td><td><b>303.0</b></td></tr>
+        <tr class="is-ours"><td>Ours</td><td>&check;</td><td></td><td>750k</td><td><b>1.87</b></td><td>301.0</td></tr>
+        <tr class="fl-sep"><td colspan="6"></td></tr>
+        <tr><td>PixelGen</td><td>&check;</td><td>&check;</td><td>800k</td><td><b>1.83</b></td><td>293.6</td></tr>
+        <tr class="is-ours"><td>Ours</td><td>&check;</td><td>&check;</td><td><b>500k</b></td><td><b>1.83</b></td><td><b>323.4</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="fl-more">
+    More ablations and results (loss components, schedule variants, 512² resolution, generalization to PixelDiT) are in
+    <a href="https://arxiv.org/pdf/2609.02748" target="_blank" rel="noopener">the paper</a>.
+  </p>
+</section>
+
+<!-- ============================== GALLERY ============================== -->
+<section id="gallery" class="fl-section fl-bleed fl-gallery">
+  <p class="fl-kicker" style="text-align:center">Samples</p>
+  <h2 class="fl-h2" style="text-align:center">ImageNet 512² samples with the <span class="c-fv"><i>fv</i>-loss</span></h2>
+  <div class="fl-marquee">
+    <div class="fl-marquee-track">
+      {% for i in (1..12) %}<img src="{{ img }}/gallery/{{ i }}.jpg" alt="Generated sample {{ i }}" loading="lazy">{% endfor %}
+      {% for i in (1..12) %}<img src="{{ img }}/gallery/{{ i }}.jpg" alt="" aria-hidden="true" loading="lazy">{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BIBTEX ============================== -->
+<section id="bibtex" class="fl-section">
+  <h2 class="fl-h2">BibTeX</h2>
+<pre><code>@inproceedings{degeorge2026balancing,
+  title     = {Balancing Frequencies and Pixels in Flow Matching},
+  author    = {Degeorge, Lucas and Couairon, Paul and Ghosh, Arijit and
+               Efros, Alexei A. and Picard, David and Kalogeiton, Vicky},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2026}
+}</code></pre>
+</section>
+
+</div>
