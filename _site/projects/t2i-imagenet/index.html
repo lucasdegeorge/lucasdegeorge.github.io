@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How far can we go with ImageNet for Text-to-Image generation? | Lucas Degeorge</title>
-  <meta name="description" content="PhD student in Computer Vision and Generative Modeling.">
+  <meta name="description" content="Text-to-image generation trained only on ImageNet: long synthetic captions, CutMix and MIRO conditioning reach FLUX-dev on GenEval with 1/1000th of the training images.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  
+  <link rel="stylesheet" href="/assets/css/floss.css">
+  
+  <link rel="stylesheet" href="/assets/css/t2i.css">
+  
   <link rel="canonical" href="http://localhost:4000/projects/t2i-imagenet/">
   <link rel="alternate" type="application/rss+xml" title="Lucas Degeorge" href="/feed.xml">
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -15,8 +24,8 @@
 <meta property="og:title" content="How far can we go with ImageNet for Text-to-Image generation?" />
 <meta name="author" content="Lucas Degeorge" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="PhD student in Computer Vision and Generative Modeling." />
-<meta property="og:description" content="PhD student in Computer Vision and Generative Modeling." />
+<meta name="description" content="Text-to-image generation trained only on ImageNet: long synthetic captions, CutMix and MIRO conditioning reach FLUX-dev on GenEval with 1/1000th of the training images." />
+<meta property="og:description" content="Text-to-image generation trained only on ImageNet: long synthetic captions, CutMix and MIRO conditioning reach FLUX-dev on GenEval with 1/1000th of the training images." />
 <link rel="canonical" href="http://localhost:4000/projects/t2i-imagenet/" />
 <meta property="og:url" content="http://localhost:4000/projects/t2i-imagenet/" />
 <meta property="og:site_name" content="Lucas Degeorge" />
@@ -27,7 +36,7 @@
 <meta property="twitter:image" content="http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png" />
 <meta property="twitter:title" content="How far can we go with ImageNet for Text-to-Image generation?" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Lucas Degeorge"},"dateModified":"2025-02-01T00:00:00+01:00","datePublished":"2025-02-01T00:00:00+01:00","description":"PhD student in Computer Vision and Generative Modeling.","headline":"How far can we go with ImageNet for Text-to-Image generation?","image":"http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/t2i-imagenet/"},"url":"http://localhost:4000/projects/t2i-imagenet/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Lucas Degeorge"},"dateModified":"2025-02-01T00:00:00+01:00","datePublished":"2025-02-01T00:00:00+01:00","description":"Text-to-image generation trained only on ImageNet: long synthetic captions, CutMix and MIRO conditioning reach FLUX-dev on GenEval with 1/1000th of the training images.","headline":"How far can we go with ImageNet for Text-to-Image generation?","image":"http://localhost:4000/assets/images/projects/t2i_imagenet/teaser.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/t2i-imagenet/"},"url":"http://localhost:4000/projects/t2i-imagenet/"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -45,7 +54,7 @@
         <li><a href="/#about">About</a></li>
         <li><a href="/#news">News</a></li>
         <li><a href="/#publications">Publications</a></li>
-        <li><a href="/projects/" class="active">Projects</a></li>
+        <li><a href="/#misc">Misc</a></li>
         <!-- <li><a href="/#teaching">Teaching</a></li> -->
         <!-- <li><a href="/#opensource">Open Source</a></li> -->
       </ul>
@@ -66,620 +75,425 @@
 
   
   <main class="container">
-    <article class="project">
-  <header class="project-header">
-    <h1>How far can we go with ImageNet for Text-to-Image generation?</h1>
     
-    <p class="subtitle">Training high-quality text-to-image generation models with 1/10th the parameters, 1/1000th the training images, in about 500 H100 hours</p>
-    
-    
-    <div class="project-meta">
-      
-      <span class="date">February 2025</span>
-      
-      
-      
-      <a href="https://github.com/lucasdegeorge/T2I-ImageNet" class="project-link" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 16 16" width="16" height="16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-        GitHub
-      </a>
-      
-      
-      
-      <a href="https://arxiv.org/abs/2502.21318" class="project-link" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 16 16" width="16" height="16"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-9a.75.75 0 010-1.5h9a.25.25 0 00.25-.25V4.664a.25.25 0 00-.073-.177L11.513 1.573a.25.25 0 00-.177-.073H5.75a.25.25 0 00-.25.25v2.5a.75.75 0 01-1.5 0v-2.5z"></path><path d="M1.5 8.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8A.75.75 0 011.5 8.5zM1.5 11.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8a.75.75 0 01-.75-.75z"></path></svg>
-        Paper
-      </a>
-      
-      
-      
-      
-      
-      <a href="https://huggingface.co/Lucasdegeorge/CAD-I" class="project-link" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-        Models
-      </a>
-      
-      
-      
-      <a href="https://huggingface.co/arijitghosh/datasets" class="project-link" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-        Datasets
-      </a>
-      
-    </div>
-  </header>
-  
-  <div class="project-content">
-    <div class="project-image-header">
-  <img src="/assets/images/projects/t2i_imagenet/teaser.png" alt="T2I-ImageNet Teaser" class="img-fluid" />
-</div>
+<div class="fl t2i" data-img-root="/assets/images/projects/t2i_imagenet/v2">
 
-<div class="project-authors">
-  <a href="https://lucasdegeorge.github.io/">Lucas Degeorge</a>, 
-  <a href="https://arijit-hub.github.io/">Arijit Ghosh</a>, 
-  <a href="https://nicolas-dufour.github.io/">Nicolas Dufour</a>, 
-  <a href="https://vicky.kalogeiton.info/">Vicky Kalogeiton</a>, 
-  <a href="https://davidpicard.github.io/">David Picard</a>
-</div>
+<!-- ============================== HERO ============================== -->
+<section class="fl-hero">
+  <h1 class="fl-title">
+    <span class="fl-title-line">How Far Can We Go With <span class="c-in">ImageNet</span></span>
+    <span class="fl-title-line">for Text-to-Image Generation?</span>
+  </h1>
 
-<h2 id="overview">Overview</h2>
-
-<p>The common belief in text-to-image (T2I) generation is that larger training datasets lead to better performance, pushing the field towards billion-scale datasets. However, this “bigger is better” approach often overlooks data efficiency, reproducibility, and accessibility, as many large datasets are closed-source or decay over time.</p>
-
-<p><strong>Our work challenges this paradigm.</strong> We demonstrate that it’s possible to match or even outperform models trained on massive web-scraped collections by using <strong>only ImageNet</strong>, a widely available and standardized dataset. By enhancing ImageNet with carefully designed text and image augmentations, our approach achieves:</p>
-
-<ul>
-  <li>A <strong>+6% overall score over SD-XL on GenEval</strong> and <strong>+5% on DPGBench</strong>, using models with just <strong>1/10th the parameters</strong> and trained on <strong>1/1000th the number of images</strong>.</li>
-  <li>Our models (300M-400M parameters) can be trained with a significantly reduced compute budget (around <strong>500 H100 hours</strong>).</li>
-  <li>We also show successful scaling to higher resolution (512x512 and 1024x1024) generation under these constraints.</li>
-</ul>
-
-<p>This research opens avenues for more reproducible and accessible T2I research, enabling more teams to contribute to the field without requiring massive compute resources or proprietary datasets. All our training data, code, and models are openly available.</p>
-
-<h2 id="adopting-imagenet-for-text-to-image-generation">Adopting ImageNet for Text-to-Image Generation</h2>
-
-<h4 id="1-long-informative-captions">1. Long Informative Captions</h4>
-
-<p>ImageNet’s original labels are simple class names, but the images contain rich visual information. We generate highly detailed captions that describe those images.</p>
-
-<h4 id="2-image-augmentations-to-reduce-overfitting-and-increase-compositionality">2. Image Augmentations to Reduce Overfitting and Increase Compositionality</h4>
-
-<p>Models trained on ImageNet (even with text augmentation) can suffer from early overfitting due to its relatively small scale (1.2M images) and struggle with complex compositions due to its object-centric nature. We implement two Image Augmentation (IA) methods (CutMix and Crop) to mitigate those issues.</p>
-
-<p>These IA strategies, when combined with text augmentation (TA+IA), demonstrably reduce overfitting and significantly improve compositional reasoning (+7 points on GenEval’s “Two Objects” sub-task).</p>
-
-<div class="project-image">
-  <img src="/assets/images/projects/t2i_imagenet/ta_tapia_comp.png" alt="Qualitative comparison across models" class="img-fluid" />
-  <p class="image-caption">
-     Qualitative comparison: Text-Augmentation (TA, first, third columns) vs Text+Image Augmentation (TA+IA second, last columns) for four prompts. 
+  <p class="fl-authors">
+    <a href="https://lucasdegeorge.github.io/">Lucas Degeorge</a><sup>*1,2,4</sup>,
+    <a href="https://arijit-hub.github.io/">Arijit Ghosh</a><sup>*1,3</sup>,
+    <a href="https://nicolas-dufour.github.io/">Nicolas Dufour</a><sup>1,3,4</sup>,
+    <a href="https://davidpicard.github.io/">David Picard</a><sup>&dagger;3</sup>,
+    <a href="https://vicky.kalogeiton.info/">Vicky Kalogeiton</a><sup>&dagger;1</sup>
   </p>
-</div>
-
-<h2 id="comparison-with-state-of-the-art">Comparison with State-of-the-Art</h2>
-
-<p>We compare our $512^2$ resolution model against the state-of-the-art. Despite using significantly fewer resources (parameters and training data), its demonstrates strong performance compared to established large-scale models.</p>
-
-<div class="project-image">
-  <img src="/assets/images/projects/t2i_imagenet/bubble_plot.png" alt="Quantitative results on GenEval and DPGBench" class="img-fluid" />
-  <p class="image-caption">
-    Quantitative results on GenEval (left) and DPGBench (right). The size of the bubble represents the number of parameters. Our models (labeled "Ours") achieve superior or comparable performance to much larger models trained on vastly more data.
+  <p class="fl-affils">
+    <sup>1</sup>LIX, &Eacute;cole Polytechnique &nbsp;&middot;&nbsp;
+    <sup>2</sup>AMIAD &nbsp;&middot;&nbsp;
+    <sup>3</sup>Kyutai &nbsp;&middot;&nbsp;
+    <sup>4</sup>LIGM, &Eacute;cole des Ponts
+    <br><span class="fl-note"><sup>*</sup>Equal contribution &nbsp; <sup>&dagger;</sup>Equal supervision</span>
   </p>
-</div>
 
-<h2 id="gallery">Gallery</h2>
+  <div class="fl-buttons">
+    <a class="fl-btn" href="https://arxiv.org/abs/2502.21318" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-9a.75.75 0 010-1.5h9a.25.25 0 00.25-.25V4.664a.25.25 0 00-.073-.177L11.513 1.573a.25.25 0 00-.177-.073H5.75a.25.25 0 00-.25.25v2.5a.75.75 0 01-1.5 0v-2.5z"/><path d="M1.5 8.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8A.75.75 0 011.5 8.5zM1.5 11.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8a.75.75 0 01-.75-.75z"/></svg>
+      Paper
+    </a>
+    <a class="fl-btn" href="https://github.com/lucasdegeorge/T2I-ImageNet" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Code
+    </a>
+    <a class="fl-btn" href="https://huggingface.co/Lucasdegeorge/CAD-I" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8.878.392a1.75 1.75 0 00-1.756 0l-5.25 3.045A1.75 1.75 0 001 4.951v6.098c0 .624.332 1.2.872 1.514l5.25 3.045a1.75 1.75 0 001.756 0l5.25-3.045c.54-.313.872-.89.872-1.514V4.951c0-.624-.332-1.2-.872-1.514L8.878.392zM7.875 1.69a.25.25 0 01.25 0l4.63 2.685L8 7.133 3.245 4.375l4.63-2.685zM2.5 5.677v5.372c0 .09.047.171.125.216l4.625 2.683V8.432L2.5 5.677zm6.25 8.271l4.625-2.683a.25.25 0 00.125-.216V5.677L8.75 8.432v5.516z"/></svg>
+      Models
+    </a>
+    <a class="fl-btn" href="https://huggingface.co/arijitghosh/datasets" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1 3.5C1 2.12 3.69 1 8 1s7 1.12 7 2.5v9c0 1.38-2.69 2.5-7 2.5s-7-1.12-7-2.5v-9zm1.5 0c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9s-.3-.5-1.5-.9c-1-.3-2.4-.6-4-.6s-3 .3-4 .6c-1.2.4-1.5.8-1.5.9zm11 1.9c-.4.2-.8.3-1.2.5-1.2.4-2.8.6-4.3.6s-3.1-.2-4.3-.6c-.4-.2-.8-.3-1.2-.5V8c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9V5.4zm0 4.5c-.4.2-.8.3-1.2.5-1.2.4-2.8.6-4.3.6s-3.1-.2-4.3-.6c-.4-.2-.8-.3-1.2-.5v2.6c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9V9.9z"/></svg>
+      Datasets
+    </a>
+    <a class="fl-btn" href="#bibtex">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0114.25 16H1.75A1.75 1.75 0 010 14.25V1.75zm1.75-.25a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V1.75a.25.25 0 00-.25-.25H1.75zM3.5 4.75A.75.75 0 014.25 4h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3A.75.75 0 014.25 7h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"/></svg>
+      BibTeX
+    </a>
+  </div>
+</section>
 
-<div class="carousel-container">
-  <div class="carousel-wrapper">
-    <div class="carousel-slides">
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0001.png" alt="Generated image 1" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0002.png" alt="Generated image 2" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0003.png" alt="Generated image 3" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0004.png" alt="Generated image 4" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0005.png" alt="Generated image 5" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0006.png" alt="Generated image 6" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0007.png" alt="Generated image 7" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0008.png" alt="Generated image 8" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0009.png" alt="Generated image 9" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0010.png" alt="Generated image 10" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0011.png" alt="Generated image 11" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0012.png" alt="Generated image 12" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0013.png" alt="Generated image 13" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0014.png" alt="Generated image 14" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0015.png" alt="Generated image 15" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0016.png" alt="Generated image 16" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0017.png" alt="Generated image 17" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0018.png" alt="Generated image 18" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0019.png" alt="Generated image 19" loading="lazy" />
-      </div>
-      
-      <div class="carousel-slide">
-        <img src="/assets/images/projects/t2i_imagenet/carousel/0020.png" alt="Generated image 20" loading="lazy" />
-      </div>
-      
+<!-- ============================== TEASER ============================== -->
+<section class="fl-section t2i-teaser" aria-label="Samples from our ImageNet-only models">
+  <div class="t2i-mosaic">
+    <img src="/assets/images/projects/t2i_imagenet/v2/teaser/1.jpg" alt="Generated sample 1"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/2.jpg" alt="Generated sample 2"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/3.jpg" alt="Generated sample 3"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/4.jpg" alt="Generated sample 4"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/5.jpg" alt="Generated sample 5"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/6.jpg" alt="Generated sample 6"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/7.jpg" alt="Generated sample 7"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/8.jpg" alt="Generated sample 8"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/9.jpg" alt="Generated sample 9"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/10.jpg" alt="Generated sample 10"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/11.jpg" alt="Generated sample 11"><img src="/assets/images/projects/t2i_imagenet/v2/teaser/12.jpg" alt="Generated sample 12">
+  </div>
+  <p class="fl-caption" style="text-align:center">Images generated by models trained <b>only on ImageNet</b>.</p>
+</section>
+
+<!-- ============================== TL;DR ============================== -->
+<section id="tldr" class="fl-section">
+  <p class="fl-kicker">TL;DR</p>
+  <h2 class="fl-h2">Is "bigger is better" the only way?</h2>
+  <p class="fl-lead">
+    Text-to-image models are usually trained on billion-scale web datasets, which are either closed or decaying over time.
+    We show that a model trained on <b>ImageNet alone</b> (1.2M images), enhanced with well-designed <b>text and image augmentations</b>,
+    reaches the GenEval score of <b>FLUX-dev</b> and outperforms <b>SD3</b> and <b>SDXL</b>,
+    with <b>1/1000th of the training images</b> and 3&times; to 10&times; fewer parameters.
+    The standardized training setup only needs about <b>500 H100 hours</b>, which makes text-to-image research reproducible and accessible.
+  </p>
+
+  <div class="fl-card">
+    <div class="t2i-panels">
+      <div class="t2i-panel"><h4>GenEval</h4><div class="fl-chart" id="chart-bubble-geneval"></div></div>
+      <div class="t2i-panel"><h4>DPGBench</h4><div class="fl-chart" id="chart-bubble-dpg"></div></div>
     </div>
-    
-    <button class="carousel-button prev" aria-label="Previous slide">‹</button>
-    <button class="carousel-button next" aria-label="Next slide">›</button>
-    
-    <div class="carousel-counter">1 / 20</div>
-    
-    <div class="carousel-indicators">
-      
-      <button class="carousel-indicator" aria-label="Go to slide 1"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 2"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 3"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 4"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 5"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 6"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 7"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 8"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 9"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 10"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 11"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 12"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 13"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 14"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 15"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 16"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 17"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 18"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 19"></button>
-      
-      <button class="carousel-indicator" aria-label="Go to slide 20"></button>
-      
+    <p class="fl-caption">Overall score vs. training set size (log scale). Bubble area is proportional to the number of parameters. Models whose training data is undisclosed are shown on the right.</p>
+  </div>
+</section>
+
+<!-- ============================== TEXT ============================== -->
+<section id="text" class="fl-section">
+  <p class="fl-kicker">1 &middot; Text challenges</p>
+  <h2 class="fl-h2">ImageNet has no captions</h2>
+  <p>
+    ImageNet is a classification dataset. The simplest caption, <span class="t2i-aio">"An image of &lang;class name&rang;"</span> (AIO),
+    gives very poor text-to-image models: it has only about a thousand words, ignores everything in the image besides the class,
+    and has no word for concepts such as <em>person</em>, <em>road</em> or <em>water</em>, which appear in many images but are not classes.
+  </p>
+  <p>
+    <b>Long informative captions (TA).</b> We re-caption every image with LLaVA, describing scene composition, background, secondary objects,
+    attributes and actions. The same captioner describes our CutMix images (see below). Pick an image:
+  </p>
+
+  <div class="fl-card t2i-captions">
+    <div class="t2i-cap-tabs" role="tablist"></div>
+    <div class="t2i-cap-body">
+      <img class="t2i-cap-img" alt="Training image">
+      <div class="t2i-cap-text">
+        <p class="t2i-cap-aio"><span>AIO</span> An image of &lang;class name&rang;</p>
+        <p class="t2i-cap-ta"><span>TA</span> <span class="t2i-typed"></span></p>
+      </div>
     </div>
   </div>
-  <p class="image-caption">
-    Example generations from our models following various text prompts. Use arrow buttons or swipe to navigate through the gallery.
+
+  <p>
+    Long captions transform ImageNet into a text-to-image dataset. On ImageNet validation, FID drops from <b>20.14</b> to <b>6.29</b> for DiT-I;
+    on COCO, which is zero-shot for our models, only TA models follow the prompt (Jina CLIP <b>22.42 &rarr; 38.39</b>).
+    GenEval jumps from <b>0.11</b> to <b>0.55</b>.
   </p>
-</div>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead>
+        <tr><th>Model</th><th>Caption</th><th>FID IN-Val &darr;</th><th>FID COCO &darr;</th><th>Jina CLIP COCO &uarr;</th><th>GenEval &uarr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t2i-model">DiT-I</td><td>AIO</td><td>20.14</td><td>71.00</td><td>22.42</td><td>0.11</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>TA</td><td><b>6.29</b></td><td><b>45.71</b></td><td><b>38.39</b></td><td><b>0.55</b></td></tr>
+        <tr><td class="t2i-model">TextRIN-I</td><td>AIO</td><td>84.77</td><td><b>46.35</b></td><td>14.06</td><td>0.17</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>TA</td><td><b>6.16</b></td><td>49.89</td><td><b>37.85</b></td><td><b>0.55</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-<h2 id="task-specific-finetuning-aesthetic-quality">Task Specific Finetuning: Aesthetic Quality</h2>
+<!-- ============================== IMAGE ============================== -->
+<section id="image" class="fl-section">
+  <p class="fl-kicker">2 &middot; Image challenges</p>
+  <h2 class="fl-h2">Overfitting and object-centric images</h2>
+  <p>
+    Even with long captions, ImageNet-only training faces two limitations. <b>Early overfitting:</b> with only 1.2M images,
+    latent-space models start to overfit after about 200k steps. <b>Limited compositionality:</b> ImageNet is object-centric,
+    so models struggle with spatial relations, attribute binding and multi-object scenes.
+  </p>
+  <p><b>Image augmentation (IA).</b> We study two augmentations:</p>
+  <ul class="fl-list">
+    <li><b>CutMix:</b> a smaller image from another class is pasted onto the original image, and the composite is re-captioned.
+      To avoid learning the sharp paste boundaries, CutMix images are only used at noise levels where the boundary is no longer visible.</li>
+    <li><b>Crop:</b> the model only sees a random local crop of the image tokens, with the crop coordinates added to the caption.
+      This helps decouple objects from their background.</li>
+  </ul>
 
-<p>We demonstrate that our models can be effectively finetuned for specific tasks. Below, we compare our aesthetically-finetuned model against state-of-the-art models (SD-XL, PixArt, SD3-Medium) on the same prompts.</p>
-
-<div class="comparison-carousel-container">
-  <div class="comparison-carousel-wrapper">
-    <div class="comparison-carousel-slides">
-      
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000006.jpg" alt="Our model - 000006" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000006.png" alt="SD-XL - 000006" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000006.png" alt="PixArt - 000006" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000006.png" alt="SD3-Medium - 000006" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000012.jpg" alt="Our model - 000012" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000012.png" alt="SD-XL - 000012" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000012.png" alt="PixArt - 000012" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000012.png" alt="SD3-Medium - 000012" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000018.jpg" alt="Our model - 000018" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000018.png" alt="SD-XL - 000018" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000018.png" alt="PixArt - 000018" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000018.png" alt="SD3-Medium - 000018" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000028.jpg" alt="Our model - 000028" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000028.png" alt="SD-XL - 000028" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000028.png" alt="PixArt - 000028" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000028.png" alt="SD3-Medium - 000028" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000034.jpg" alt="Our model - 000034" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000034.png" alt="SD-XL - 000034" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000034.png" alt="PixArt - 000034" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000034.png" alt="SD3-Medium - 000034" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000040.jpg" alt="Our model - 000040" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000040.png" alt="SD-XL - 000040" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000040.png" alt="PixArt - 000040" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000040.png" alt="SD3-Medium - 000040" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000050.jpg" alt="Our model - 000050" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000050.png" alt="SD-XL - 000050" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000050.png" alt="PixArt - 000050" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000050.png" alt="SD3-Medium - 000050" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000056.jpg" alt="Our model - 000056" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000056.png" alt="SD-XL - 000056" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000056.png" alt="PixArt - 000056" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000056.png" alt="SD3-Medium - 000056" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000058.jpg" alt="Our model - 000058" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000058.png" alt="SD-XL - 000058" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000058.png" alt="PixArt - 000058" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000058.png" alt="SD3-Medium - 000058" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
-      <div class="comparison-carousel-slide">
-        <div class="comparison-image-container ours">
-          <div class="comparison-image-label">Ours</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/ours/000088.jpg" alt="Our model - 000088" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD-XL</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sdxl/000088.png" alt="SD-XL - 000088" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">PixArt</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/pixart/000088.png" alt="PixArt - 000088" loading="lazy" />
-          </div>
-        </div>
-        
-        <div class="comparison-image-container">
-          <div class="comparison-image-label">SD3-Medium</div>
-          <div class="comparison-image-wrapper">
-            <img src="/assets/images/projects/t2i_imagenet/aesth_carousel/sd3m/000088.png" alt="SD3-Medium - 000088" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      
+  <div class="fl-card">
+    <div class="t2i-legend"><span class="sw" style="background:var(--t2i-ta)"></span><span>TA</span><span class="sw" style="background:var(--t2i-ia)"></span><span>TA + IA</span></div>
+    <div class="t2i-three">
+      <div><h4>TextRIN-I</h4><div class="fl-chart" id="chart-overfit-0"></div></div>
+      <div><h4>SiT-I</h4><div class="fl-chart" id="chart-overfit-1"></div></div>
+      <div><h4>JiT-I</h4><div class="fl-chart" id="chart-overfit-2"></div></div>
     </div>
+    <p class="fl-caption">GenEval score during training. Image augmentation delays or prevents overfitting for the latent-space models (TextRIN-I, SiT-I).
+      The pixel-space JiT-I does not overfit and does not benefit from it.</p>
+  </div>
+
+  <p>
+    Image augmentation helps the latent-space models, and SiT-I benefits the most: with CutMix, its GenEval jumps by <b>+10 points</b> (to 0.61), driven by
+    color attribution (+16) and two objects (+13), and ImageReward goes from &minus;0.12 to 0.22.
+    In contrast, the pixel-space JiT-I degrades slightly. We attribute this to the VAE of latent models, whose encoder absorbs the sharp,
+    locally unnatural CutMix boundaries; JiT-I models raw pixels and has no such filter.
+  </p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table t2i-grouped">
+      <thead>
+        <tr><th>Model</th><th>IA</th><th>GenEval &uarr;</th><th>Two obj. &uarr;</th><th>Position &uarr;</th><th>Col. attr. &uarr;</th><th>ImageReward &uarr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">DiT-I</td><td>&ndash;</td><td>0.55</td><td>0.61</td><td>0.28</td><td>0.33</td><td>0.18</td></tr>
+        <tr><td>Crop</td><td>0.54</td><td>0.56</td><td>0.22</td><td>0.33</td><td>0.12</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.58</b></td><td><b>0.67</b></td><td><b>0.30</b></td><td><b>0.35</b></td><td><b>0.26</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">TextRIN-I</td><td>&ndash;</td><td>0.55</td><td>0.60</td><td>0.26</td><td>0.35</td><td>0.22</td></tr>
+        <tr><td>Crop</td><td>0.54</td><td>0.61</td><td>0.23</td><td>0.33</td><td>&minus;0.10</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.57</b></td><td><b>0.68</b></td><td><b>0.35</b></td><td><b>0.36</b></td><td><b>0.30</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">SiT-I</td><td>&ndash;</td><td>0.51</td><td>0.56</td><td>0.25</td><td>0.24</td><td>&minus;0.12</td></tr>
+        <tr><td>Crop</td><td>0.59</td><td>0.66</td><td>0.28</td><td>0.39</td><td>0.07</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.61</b></td><td><b>0.69</b></td><td><b>0.34</b></td><td><b>0.40</b></td><td><b>0.22</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">JiT-I</td><td>&ndash;</td><td><b>0.54</b></td><td><b>0.62</b></td><td><b>0.24</b></td><td><b>0.29</b></td><td><b>&minus;0.01</b></td></tr>
+        <tr><td>Crop</td><td>0.51</td><td>0.53</td><td>0.20</td><td>0.26</td><td>&minus;0.09</td></tr>
+        <tr><td>CutMix</td><td>0.50</td><td>0.57</td><td>0.22</td><td>0.27</td><td>&minus;0.07</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Image augmentation also improves compositions. With TA only, the teddy bear sits awkwardly on the motorbike; with TA + IA it drives it.
+    The goat scene is better composed, and color attribution improves for the butterfly and the baseballs.</p>
+  <div class="t2i-pairs">
+    <div class="t2i-legend"><span class="sw" style="background:var(--t2i-ta)"></span><span>TA</span><span class="sw" style="background:var(--t2i-ia)"></span><span>TA + IA</span></div>
     
-    <button class="comparison-carousel-button prev" aria-label="Previous comparison">‹</button>
-    <button class="comparison-carousel-button next" aria-label="Next comparison">›</button>
+    <div class="t2i-pair-grid">
     
-    <div class="comparison-carousel-counter">1 / 10</div>
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_hedgehog.jpg" alt="TA: A hedgehog and an hourglass" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_hedgehog.jpg" alt="TA + IA: A hedgehog and an hourglass" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;A hedgehog and an hourglass&rdquo;</figcaption>
+      </figure>
     
-    <div class="comparison-carousel-indicators">
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 1"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 2"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 3"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 4"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 5"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 6"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 7"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 8"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 9"></button>
-      
-      <button class="comparison-carousel-indicator" aria-label="Go to comparison 10"></button>
-      
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_teddybear.jpg" alt="TA: A teddy bear driving a motorbike" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_teddybear.jpg" alt="TA + IA: A teddy bear driving a motorbike" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;A teddy bear driving a motorbike&rdquo;</figcaption>
+      </figure>
+    
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_balls.jpg" alt="TA: Two beat-up baseballs and a yellow basketball" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_balls.jpg" alt="TA + IA: Two beat-up baseballs and a yellow basketball" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;Two beat-up baseballs and a yellow basketball&rdquo;</figcaption>
+      </figure>
+    
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_tea.jpg" alt="TA: A teapot and cookies on a table" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_tea.jpg" alt="TA + IA: A teapot and cookies on a table" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;A teapot and cookies on a table&rdquo;</figcaption>
+      </figure>
+    
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_goat.jpg" alt="TA: A goat on a mountain top" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_goat.jpg" alt="TA + IA: A goat on a mountain top" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;A goat on a mountain top&rdquo;</figcaption>
+      </figure>
+    
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ta_butterfly.jpg" alt="TA: Multicolored butterfly atop a vibrant tangerine" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="/assets/images/projects/t2i_imagenet/v2/quali/ia_butterfly.jpg" alt="TA + IA: Multicolored butterfly atop a vibrant tangerine" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;Multicolored butterfly atop a vibrant tangerine&rdquo;</figcaption>
+      </figure>
+    
     </div>
   </div>
-  <p class="image-caption">
-    Side-by-side comparison of our aesthetically-finetuned model against state-of-the-art T2I models. Our model (highlighted) shows competitive or superior visual quality despite being trained on significantly less data. Use arrow buttons to navigate through different prompts.
+</section>
+
+<!-- ============================== MIRO ============================== -->
+<section id="miro" class="fl-section">
+  <p class="fl-kicker">3 &middot; Conditioning with MIRO</p>
+  <h2 class="fl-h2">Learning preferences during pretraining</h2>
+  <p>
+    <a href="https://nicolas-dufour.github.io/miro/" target="_blank" rel="noopener">MIRO</a> conditions text-to-image pretraining on multiple reward
+    signals, so the model learns user preferences directly instead of relying on post-hoc reward fine-tuning. In our ImageNet-only setting,
+    MIRO improves SiT-I by <b>+5 GenEval points</b> (0.51 &rarr; 0.56) and ImageReward from <b>&minus;0.12</b> to <b>0.29</b>.
+    The gain is smaller than in the original paper with web-scale data, and smaller than what CutMix alone brings.
   </p>
-</div>
-
-<h2 id="bibtex">BibTeX</h2>
-
-<div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@article</span><span class="p">{</span><span class="nl">degeorge2025farimagenettexttoimagegeneration</span><span class="p">,</span> 
-     <span class="na">title</span>           <span class="p">=</span><span class="s">{How far can we go with ImageNet for Text-to-Image generation?}</span><span class="p">,</span> 
-     <span class="na">author</span>          <span class="p">=</span><span class="s">{Lucas Degeorge and Arijit Ghosh and Nicolas Dufour and David Picard and Vicky Kalogeiton}</span><span class="p">,</span> 
-     <span class="na">year</span>            <span class="p">=</span><span class="s">{2025}</span><span class="p">,</span> 
-     <span class="na">journal</span>         <span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
- <span class="p">}</span>
-</code></pre></div></div>
-
-<h2 id="acknowledgments">Acknowledgments</h2>
-
-<p>This work was granted access to the HPC resources of IDRIS under the allocation 2025-AD011015436 and 2025-AD011015594 made by GENCI, and by the SHARP ANR project ANR-23-PEIA-0008 funded in the context of the France 2030 program. The authors would like to thank Alexei A. Efros, Thibaut Loiseau, Yannis Siglidis, Yohann Perron, Louis Geist, Robin Courant and Sinisa Stekovic for their insightful comments, suggestions, and discussions.</p>
-
-<hr />
-
-<p><em>Published: February 2025</em></p>
-
+  <div class="fl-card t2i-miro">
+    
+    <div class="t2i-miro-grid">
+      <span></span>
+      <span class="t2i-miro-step" style="--k: 0">25k</span><span class="t2i-miro-step" style="--k: 1">50k</span><span class="t2i-miro-step" style="--k: 2">75k</span><span class="t2i-miro-step" style="--k: 3">100k</span><span class="t2i-miro-step" style="--k: 4">125k</span><span class="t2i-miro-step" style="--k: 5">150k</span><span class="t2i-miro-step" style="--k: 6">200k</span>
+      <span class="t2i-miro-row">SiT-I CutMix</span>
+      <img class="t2i-miro-cell" style="--k: 0" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_25000.jpg" alt="SiT-I CutMix, step 25000" loading="lazy"><img class="t2i-miro-cell" style="--k: 1" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_50000.jpg" alt="SiT-I CutMix, step 50000" loading="lazy"><img class="t2i-miro-cell" style="--k: 2" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_75000.jpg" alt="SiT-I CutMix, step 75000" loading="lazy"><img class="t2i-miro-cell" style="--k: 3" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_100000.jpg" alt="SiT-I CutMix, step 100000" loading="lazy"><img class="t2i-miro-cell" style="--k: 4" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_125000.jpg" alt="SiT-I CutMix, step 125000" loading="lazy"><img class="t2i-miro-cell" style="--k: 5" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_150000.jpg" alt="SiT-I CutMix, step 150000" loading="lazy"><img class="t2i-miro-cell" style="--k: 6" src="/assets/images/projects/t2i_imagenet/v2/miro/sit_200000.jpg" alt="SiT-I CutMix, step 200000" loading="lazy">
+      <span class="t2i-miro-row">+ MIRO</span>
+      <img class="t2i-miro-cell" style="--k: 0" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_25000.jpg" alt="SiT-I CutMix + MIRO, step 25000" loading="lazy"><img class="t2i-miro-cell" style="--k: 1" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_50000.jpg" alt="SiT-I CutMix + MIRO, step 50000" loading="lazy"><img class="t2i-miro-cell" style="--k: 2" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_75000.jpg" alt="SiT-I CutMix + MIRO, step 75000" loading="lazy"><img class="t2i-miro-cell" style="--k: 3" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_100000.jpg" alt="SiT-I CutMix + MIRO, step 100000" loading="lazy"><img class="t2i-miro-cell" style="--k: 4" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_125000.jpg" alt="SiT-I CutMix + MIRO, step 125000" loading="lazy"><img class="t2i-miro-cell" style="--k: 5" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_150000.jpg" alt="SiT-I CutMix + MIRO, step 150000" loading="lazy"><img class="t2i-miro-cell" style="--k: 6" src="/assets/images/projects/t2i_imagenet/v2/miro/miro_200000.jpg" alt="SiT-I CutMix + MIRO, step 200000" loading="lazy">
+    </div>
+    <p class="t2i-prompt">&ldquo;a fluffy corgi dog mid-flight with a red superhero cape&rdquo;</p>
+    <div class="t2i-miro-foot">
+      <span class="fl-caption">Training steps, left to right. Top: SiT-I CutMix. Bottom: with MIRO conditioning.</span>
+      <button class="fl-chip t2i-miro-replay">&#8635; Replay</button>
+    </div>
   </div>
-</article>
+</section>
+
+<!-- ============================== SCALING ============================== -->
+<section id="scaling" class="fl-section">
+  <p class="fl-kicker">4 &middot; Scaling</p>
+  <h2 class="fl-h2">Bigger models and higher resolution</h2>
+  <p>
+    <b>Model size.</b> Scaling SiT-I CutMix from L to XL and H does not improve compositionality: GenEval stays flat, suggesting that the L model already extracts
+    most of what ImageNet offers for this benchmark. Aesthetic metrics improve slightly with size.
+    <b>Resolution.</b> Going to 512&sup2;, either by fine-tuning a 256&sup2; checkpoint (DiT-I) or training from scratch (SiT-I), improves both GenEval and aesthetics.
+  </p>
+  <div class="fl-two">
+    <div class="fl-card fl-table-wrap">
+      <h4>Model size (SiT-I CutMix, 256&sup2;)</h4>
+      <table class="fl-table fl-table-sm">
+        <thead><tr><th>Size</th><th>GenEval &uarr;</th><th>Aes. Score &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+        <tbody>
+          <tr><td>L</td><td><b>0.61</b></td><td>5.33</td><td>0.22</td></tr>
+          <tr><td>XL</td><td>0.58</td><td>5.33</td><td>0.23</td></tr>
+          <tr><td>H</td><td><b>0.61</b></td><td><b>5.37</b></td><td><b>0.30</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fl-card fl-table-wrap">
+      <h4>Resolution</h4>
+      <table class="fl-table fl-table-sm">
+        <thead><tr><th>Model</th><th>Res.</th><th>GenEval &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+        <tbody>
+          <tr><td class="t2i-model">DiT-I <small>(fine-tuned)</small></td><td>256&sup2;</td><td>0.58</td><td>0.26</td></tr>
+          <tr><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.61</b></td><td><b>0.40</b></td></tr>
+          <tr><td class="t2i-model">SiT-I <small>(from scratch)</small></td><td>256&sup2;</td><td>0.61</td><td>0.22</td></tr>
+          <tr><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.63</b></td><td><b>0.37</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">Putting everything together</h2>
+  <p>We combine the best ingredients into a single model: <b>SiT-H trained with CutMix and MIRO conditioning</b>. At 512&sup2;, it reaches
+    <b>0.67</b> on GenEval and an ImageReward of <b>0.73</b>.</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Res.</th><th>GenEval &uarr;</th><th>Two obj. &uarr;</th><th>Col. attr. &uarr;</th><th>PickScore &uarr;</th><th>HPSv2.1 &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+      <tbody>
+        <tr><td class="t2i-model">SiT-H CutMix + MIRO</td><td>256&sup2;</td><td>0.65</td><td>0.73</td><td>0.49</td><td>20.59</td><td>0.27</td><td>0.67</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.67</b></td><td><b>0.82</b></td><td><b>0.52</b></td><td><b>20.84</b></td><td><b>0.28</b></td><td><b>0.73</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== SOTA ============================== -->
+<section id="sota" class="fl-section">
+  <p class="fl-kicker">5 &middot; Comparison with the state of the art</p>
+  <h2 class="fl-h2">GenEval</h2>
+  <p>Our best model reaches <b>0.67</b> overall, matching FLUX-dev and surpassing SANA-0.6 (0.64) and SD3 Medium (0.62), all trained on orders of magnitude more data.
+    It obtains the best Two Objects score (0.82), but falls behind on Counting.</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Size</th><th>#data</th><th>Overall &uarr;</th><th>One obj.</th><th>Two obj.</th><th>Count.</th><th>Col.</th><th>Pos.</th><th>Col. attr.</th></tr></thead>
+      <tbody>
+        <tr><td>SD v1.5</td><td>0.9B</td><td>5B+</td><td>0.43</td><td>0.97</td><td>0.38</td><td>0.35</td><td>0.76</td><td>0.04</td><td>0.06</td></tr>
+        <tr><td>PixArt-&alpha;</td><td>0.6B</td><td>25M</td><td>0.48</td><td>0.98</td><td>0.50</td><td>0.44</td><td>0.80</td><td>0.08</td><td>0.07</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(512)</small></td><td>0.6B</td><td>35M+</td><td>0.52</td><td>0.98</td><td>0.59</td><td>0.50</td><td>0.80</td><td>0.10</td><td>0.15</td></tr>
+        <tr><td>SD v2.1</td><td>0.9B</td><td>5B+</td><td>0.50</td><td>0.98</td><td>0.51</td><td>0.44</td><td>0.85</td><td>0.07</td><td>0.17</td></tr>
+        <tr><td>SDXL</td><td>3.5B</td><td>5B+</td><td>0.55</td><td>0.98</td><td>0.74</td><td>0.39</td><td>0.85</td><td>0.15</td><td>0.23</td></tr>
+        <tr><td>SD3 M <small>(512)</small></td><td>2B</td><td>1B+</td><td>0.62</td><td>0.98</td><td>0.74</td><td>0.63</td><td>0.67</td><td>0.34</td><td>0.36</td></tr>
+        <tr><td>SANA-0.6</td><td>0.6B</td><td>undiscl.</td><td>0.64</td><td><b>0.99</b></td><td>0.71</td><td>0.63</td><td><b>0.91</b></td><td>0.16</td><td>0.42</td></tr>
+        <tr><td>FLUX-dev</td><td>12B</td><td>undiscl.</td><td>0.67</td><td><b>0.99</b></td><td>0.81</td><td><b>0.79</b></td><td>0.74</td><td>0.20</td><td>0.47</td></tr>
+        <tr><td>MIRO</td><td>0.3B</td><td>18M</td><td><b>0.75</b></td><td>0.98</td><td>0.79</td><td>0.71</td><td>0.85</td><td><b>0.58</b></td><td><b>0.58</b></td></tr>
+        <tr class="is-ours"><td>Ours</td><td>1B</td><td><b>1.2M</b></td><td>0.67</td><td>0.98</td><td><b>0.82</b></td><td>0.47</td><td>0.85</td><td>0.36</td><td>0.52</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">DPGBench</h2>
+  <p>On DPGBench, a more complex benchmark, our model reaches <b>81.2</b> overall, surpassing SDXL and PixArt-&Sigma; and matching Janus.
+    It trails FLUX-dev and SANA-0.6 by about 3 points but is the best on <em>Relation</em> (<b>93.0</b>).</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Overall &uarr;</th><th>Entity</th><th>Attribute</th><th>Relation</th><th>Other</th><th>Global</th></tr></thead>
+      <tbody>
+        <tr><td>SD v1.5</td><td>63.2</td><td>74.2</td><td>75.4</td><td>73.5</td><td>67.8</td><td>74.6</td></tr>
+        <tr><td>PixArt-&alpha;</td><td>71.1</td><td>79.3</td><td>78.6</td><td>82.6</td><td>77.0</td><td>75.0</td></tr>
+        <tr><td>SDXL</td><td>74.7</td><td>82.4</td><td>80.9</td><td>86.8</td><td>80.4</td><td>83.3</td></tr>
+        <tr><td>CAD</td><td>77.6</td><td>85.3</td><td>84.7</td><td>91.5</td><td>74.8</td><td>84.5</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(512)</small></td><td>79.5</td><td>87.1</td><td>86.5</td><td>84.0</td><td>86.1</td><td>87.5</td></tr>
+        <tr><td>Janus</td><td>79.7</td><td>87.4</td><td>87.7</td><td>85.5</td><td>86.4</td><td>82.3</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(1024)</small></td><td>80.5</td><td>82.9</td><td><b>88.9</b></td><td>86.6</td><td>87.7</td><td>86.9</td></tr>
+        <tr><td>FLUX-dev</td><td>84.0</td><td>89.5</td><td>88.7</td><td>91.1</td><td>89.4</td><td>82.1</td></tr>
+        <tr><td>SD3 Medium</td><td>84.1</td><td><b>91.0</b></td><td>88.8</td><td>80.7</td><td>88.7</td><td><b>87.9</b></td></tr>
+        <tr><td>SANA-0.6</td><td><b>84.3</b></td><td>90.0</td><td>88.6</td><td>90.1</td><td><b>91.9</b></td><td>82.6</td></tr>
+        <tr class="is-ours"><td>Ours</td><td>81.2</td><td>88.4</td><td>86.4</td><td><b>93.0</b></td><td>76.0</td><td>82.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== GENERALISATION ============================== -->
+<section id="generalisation" class="fl-section">
+  <p class="fl-kicker">6 &middot; Generalization</p>
+  <h2 class="fl-h2">Beyond ImageNet's objects</h2>
+  <p>
+    Despite ImageNet's object-centric bias, our models compose complex scenes and approximate concepts never seen during training,
+    by combining patterns from training concepts. For example, the model creates a hybrid creature mixing a giraffe and a tortoise,
+    leveraging the text understanding of the language model that encodes the prompt.
+  </p>
+  <div class="t2i-gen">
+    <figure><img src="/assets/images/projects/t2i_imagenet/v2/gen/penguin_painting.jpg" alt="Penguin painting" loading="lazy"><figcaption>A penguin stands in a small art studio holding a paintbrush dipped in blue paint, working on a canvas mounted.</figcaption></figure>
+    <figure><img src="/assets/images/projects/t2i_imagenet/v2/gen/ipad.jpg" alt="iPad on a table" loading="lazy"><figcaption>An iPad Pro rests on a rustic wooden table. The tablet is positioned at a slight angle.</figcaption></figure>
+    <figure><img src="/assets/images/projects/t2i_imagenet/v2/gen/robot.jpg" alt="Robot" loading="lazy"><figcaption>A metallic robot standing with faint blue light eyes.</figcaption></figure>
+    <figure><img src="/assets/images/projects/t2i_imagenet/v2/gen/giraffe_turtle.jpg" alt="Giraffe-tortoise hybrid" loading="lazy"><figcaption>A hybrid creature with the body and shell of a tortoise and the head and neck of a giraffe.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================== GALLERY ============================== -->
+<section id="gallery" class="fl-section fl-bleed fl-gallery">
+  <p class="fl-kicker" style="text-align:center">Samples</p>
+  <h2 class="fl-h2" style="text-align:center">512&sup2; samples, trained only on ImageNet</h2>
+  <div class="fl-marquee">
+    <div class="fl-marquee-track">
+      <img src="/assets/images/projects/t2i_imagenet/v2/gallery/1.jpg" alt="Generated sample 1" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/2.jpg" alt="Generated sample 2" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/3.jpg" alt="Generated sample 3" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/4.jpg" alt="Generated sample 4" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/5.jpg" alt="Generated sample 5" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/6.jpg" alt="Generated sample 6" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/7.jpg" alt="Generated sample 7" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/8.jpg" alt="Generated sample 8" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/9.jpg" alt="Generated sample 9" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/10.jpg" alt="Generated sample 10" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/11.jpg" alt="Generated sample 11" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/12.jpg" alt="Generated sample 12" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/13.jpg" alt="Generated sample 13" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/14.jpg" alt="Generated sample 14" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/15.jpg" alt="Generated sample 15" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/16.jpg" alt="Generated sample 16" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/17.jpg" alt="Generated sample 17" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/18.jpg" alt="Generated sample 18" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/19.jpg" alt="Generated sample 19" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/20.jpg" alt="Generated sample 20" loading="lazy">
+      <img src="/assets/images/projects/t2i_imagenet/v2/gallery/1.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/2.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/3.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/4.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/5.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/6.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/7.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/8.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/9.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/10.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/11.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/12.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/13.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/14.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/15.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/16.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/17.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/18.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/19.jpg" alt="" aria-hidden="true" loading="lazy"><img src="/assets/images/projects/t2i_imagenet/v2/gallery/20.jpg" alt="" aria-hidden="true" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BIBTEX ============================== -->
+<section id="bibtex" class="fl-section">
+  <h2 class="fl-h2">BibTeX</h2>
+<pre><code>@article{degeorge2025farimagenettexttoimagegeneration,
+  title   = {How far can we go with ImageNet for Text-to-Image generation?},
+  author  = {Degeorge, Lucas and Ghosh, Arijit and Dufour, Nicolas and
+             Picard, David and Kalogeiton, Vicky},
+  journal = {arXiv preprint arXiv:2502.21318},
+  year    = {2025}
+}</code></pre>
+
+  <h2 class="fl-h2 fl-h2-gap">Acknowledgments</h2>
+  <p>This work was granted access to the HPC resources of IDRIS under the allocation 2025-AD011015436 and 2025-AD011015594 made by GENCI, and by the SHARP ANR project ANR-23-PEIA-0008 funded in the context of the France 2030 program. The authors would like to thank Alexei A. Efros, Thibaut Loiseau, Yannis Siglidis, Yohann Perron, Louis Geist, Robin Courant and Sinisa Stekovic for their insightful comments, suggestions, and discussions.</p>
+</section>
+
+</div>
 
   </main>
   
   <footer class="site-footer">
   <div class="footer-content">
-    <p>&copy; 2025 Lucas Degeorge. All rights reserved.</p>
+    <p>&copy; 2026 Lucas Degeorge. All rights reserved.</p>
     <div class="footer-links">
       
       <a href="mailto:lucas.degeorge@polytechnique.edu" aria-label="Email" title="Email">
@@ -724,5 +538,16 @@
 
   
   <script src="/assets/js/main.js"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  
+  <script defer src="/assets/js/fl-common.js"></script>
+  
+  <script defer src="/assets/js/t2i-data.js"></script>
+  
+  <script defer src="/assets/js/t2i.js"></script>
+  
 </body>
 </html>

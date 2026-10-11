@@ -1,0 +1,396 @@
+---
+layout: default
+title: How far can we go with ImageNet for Text-to-Image generation?
+subtitle: Training high-quality text-to-image models with 1/1000th of the training images, on a 500 H100-hour budget
+description: "Text-to-image generation trained only on ImageNet: long synthetic captions, CutMix and MIRO conditioning reach FLUX-dev on GenEval with 1/1000th of the training images."
+date: 2025-02-01
+image: /assets/images/projects/t2i_imagenet/teaser.png
+github: https://github.com/lucasdegeorge/T2I-ImageNet
+paper: https://arxiv.org/abs/2502.21318
+huggingface_models: https://huggingface.co/Lucasdegeorge/CAD-I
+huggingface_datasets: https://huggingface.co/arijitghosh/datasets
+excerpt: "Can a text-to-image model be trained on ImageNet alone? With long synthetic captions, CutMix and MIRO conditioning, our ImageNet-only models match FLUX-dev on GenEval while using 1/1000th of the training images and a fraction of the parameters."
+extra_css:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css
+  - /assets/css/floss.css
+  - /assets/css/t2i.css
+extra_js:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js
+  - /assets/js/fl-common.js
+  - /assets/js/t2i-data.js
+  - /assets/js/t2i.js
+---
+{% assign img = '/assets/images/projects/t2i_imagenet/v2' | relative_url %}
+<div class="fl t2i" data-img-root="{{ img }}">
+
+<!-- ============================== HERO ============================== -->
+<section class="fl-hero">
+  <h1 class="fl-title">
+    <span class="fl-title-line">How Far Can We Go With <span class="c-in">ImageNet</span></span>
+    <span class="fl-title-line">for Text-to-Image Generation?</span>
+  </h1>
+
+  <p class="fl-authors">
+    <a href="https://lucasdegeorge.github.io/">Lucas Degeorge</a><sup>*1,2,4</sup>,
+    <a href="https://arijit-hub.github.io/">Arijit Ghosh</a><sup>*1,3</sup>,
+    <a href="https://nicolas-dufour.github.io/">Nicolas Dufour</a><sup>1,3,4</sup>,
+    <a href="https://davidpicard.github.io/">David Picard</a><sup>&dagger;3</sup>,
+    <a href="https://vicky.kalogeiton.info/">Vicky Kalogeiton</a><sup>&dagger;1</sup>
+  </p>
+  <p class="fl-affils">
+    <sup>1</sup>LIX, &Eacute;cole Polytechnique &nbsp;&middot;&nbsp;
+    <sup>2</sup>AMIAD &nbsp;&middot;&nbsp;
+    <sup>3</sup>Kyutai &nbsp;&middot;&nbsp;
+    <sup>4</sup>LIGM, &Eacute;cole des Ponts
+    <br><span class="fl-note"><sup>*</sup>Equal contribution &nbsp; <sup>&dagger;</sup>Equal supervision</span>
+  </p>
+
+  <div class="fl-buttons">
+    <a class="fl-btn" href="https://arxiv.org/abs/2502.21318" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-9a.75.75 0 010-1.5h9a.25.25 0 00.25-.25V4.664a.25.25 0 00-.073-.177L11.513 1.573a.25.25 0 00-.177-.073H5.75a.25.25 0 00-.25.25v2.5a.75.75 0 01-1.5 0v-2.5z"/><path d="M1.5 8.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8A.75.75 0 011.5 8.5zM1.5 11.5a.75.75 0 01.75-.75h8a.75.75 0 010 1.5h-8a.75.75 0 01-.75-.75z"/></svg>
+      Paper
+    </a>
+    <a class="fl-btn" href="https://github.com/lucasdegeorge/T2I-ImageNet" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Code
+    </a>
+    <a class="fl-btn" href="https://huggingface.co/Lucasdegeorge/CAD-I" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8.878.392a1.75 1.75 0 00-1.756 0l-5.25 3.045A1.75 1.75 0 001 4.951v6.098c0 .624.332 1.2.872 1.514l5.25 3.045a1.75 1.75 0 001.756 0l5.25-3.045c.54-.313.872-.89.872-1.514V4.951c0-.624-.332-1.2-.872-1.514L8.878.392zM7.875 1.69a.25.25 0 01.25 0l4.63 2.685L8 7.133 3.245 4.375l4.63-2.685zM2.5 5.677v5.372c0 .09.047.171.125.216l4.625 2.683V8.432L2.5 5.677zm6.25 8.271l4.625-2.683a.25.25 0 00.125-.216V5.677L8.75 8.432v5.516z"/></svg>
+      Models
+    </a>
+    <a class="fl-btn" href="https://huggingface.co/arijitghosh/datasets" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1 3.5C1 2.12 3.69 1 8 1s7 1.12 7 2.5v9c0 1.38-2.69 2.5-7 2.5s-7-1.12-7-2.5v-9zm1.5 0c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9s-.3-.5-1.5-.9c-1-.3-2.4-.6-4-.6s-3 .3-4 .6c-1.2.4-1.5.8-1.5.9zm11 1.9c-.4.2-.8.3-1.2.5-1.2.4-2.8.6-4.3.6s-3.1-.2-4.3-.6c-.4-.2-.8-.3-1.2-.5V8c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9V5.4zm0 4.5c-.4.2-.8.3-1.2.5-1.2.4-2.8.6-4.3.6s-3.1-.2-4.3-.6c-.4-.2-.8-.3-1.2-.5v2.6c0 .1.3.5 1.5.9 1 .3 2.4.6 4 .6s3-.3 4-.6c1.2-.4 1.5-.8 1.5-.9V9.9z"/></svg>
+      Datasets
+    </a>
+    <a class="fl-btn" href="#bibtex">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0114.25 16H1.75A1.75 1.75 0 010 14.25V1.75zm1.75-.25a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V1.75a.25.25 0 00-.25-.25H1.75zM3.5 4.75A.75.75 0 014.25 4h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3A.75.75 0 014.25 7h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zm0 3a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"/></svg>
+      BibTeX
+    </a>
+  </div>
+</section>
+
+<!-- ============================== TEASER ============================== -->
+<section class="fl-section t2i-teaser" aria-label="Samples from our ImageNet-only models">
+  <div class="t2i-mosaic">
+    {% for i in (1..12) %}<img src="{{ img }}/teaser/{{ i }}.jpg" alt="Generated sample {{ i }}">{% endfor %}
+  </div>
+  <p class="fl-caption" style="text-align:center">Images generated by models trained <b>only on ImageNet</b>.</p>
+</section>
+
+<!-- ============================== TL;DR ============================== -->
+<section id="tldr" class="fl-section">
+  <p class="fl-kicker">TL;DR</p>
+  <h2 class="fl-h2">Is "bigger is better" the only way?</h2>
+  <p class="fl-lead">
+    Text-to-image models are usually trained on billion-scale web datasets, which are either closed or decaying over time.
+    We show that a model trained on <b>ImageNet alone</b> (1.2M images), enhanced with well-designed <b>text and image augmentations</b>,
+    reaches the GenEval score of <b>FLUX-dev</b> and outperforms <b>SD3</b> and <b>SDXL</b>,
+    with <b>1/1000th of the training images</b> and 3&times; to 10&times; fewer parameters.
+    The standardized training setup only needs about <b>500 H100 hours</b>, which makes text-to-image research reproducible and accessible.
+  </p>
+
+  <div class="fl-card">
+    <div class="t2i-panels">
+      <div class="t2i-panel"><h4>GenEval</h4><div class="fl-chart" id="chart-bubble-geneval"></div></div>
+      <div class="t2i-panel"><h4>DPGBench</h4><div class="fl-chart" id="chart-bubble-dpg"></div></div>
+    </div>
+    <p class="fl-caption">Overall score vs. training set size (log scale). Bubble area is proportional to the number of parameters. Models whose training data is undisclosed are shown on the right.</p>
+  </div>
+</section>
+
+<!-- ============================== TEXT ============================== -->
+<section id="text" class="fl-section">
+  <p class="fl-kicker">1 &middot; Text challenges</p>
+  <h2 class="fl-h2">ImageNet has no captions</h2>
+  <p>
+    ImageNet is a classification dataset. The simplest caption, <span class="t2i-aio">"An image of &lang;class name&rang;"</span> (AIO),
+    gives very poor text-to-image models: it has only about a thousand words, ignores everything in the image besides the class,
+    and has no word for concepts such as <em>person</em>, <em>road</em> or <em>water</em>, which appear in many images but are not classes.
+  </p>
+  <p>
+    <b>Long informative captions (TA).</b> We re-caption every image with LLaVA, describing scene composition, background, secondary objects,
+    attributes and actions. The same captioner describes our CutMix images (see below). Pick an image:
+  </p>
+
+  <div class="fl-card t2i-captions">
+    <div class="t2i-cap-tabs" role="tablist"></div>
+    <div class="t2i-cap-body">
+      <img class="t2i-cap-img" alt="Training image">
+      <div class="t2i-cap-text">
+        <p class="t2i-cap-aio"><span>AIO</span> An image of &lang;class name&rang;</p>
+        <p class="t2i-cap-ta"><span>TA</span> <span class="t2i-typed"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    Long captions transform ImageNet into a text-to-image dataset. On ImageNet validation, FID drops from <b>20.14</b> to <b>6.29</b> for DiT-I;
+    on COCO, which is zero-shot for our models, only TA models follow the prompt (Jina CLIP <b>22.42 &rarr; 38.39</b>).
+    GenEval jumps from <b>0.11</b> to <b>0.55</b>.
+  </p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead>
+        <tr><th>Model</th><th>Caption</th><th>FID IN-Val &darr;</th><th>FID COCO &darr;</th><th>Jina CLIP COCO &uarr;</th><th>GenEval &uarr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t2i-model">DiT-I</td><td>AIO</td><td>20.14</td><td>71.00</td><td>22.42</td><td>0.11</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>TA</td><td><b>6.29</b></td><td><b>45.71</b></td><td><b>38.39</b></td><td><b>0.55</b></td></tr>
+        <tr><td class="t2i-model">TextRIN-I</td><td>AIO</td><td>84.77</td><td><b>46.35</b></td><td>14.06</td><td>0.17</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>TA</td><td><b>6.16</b></td><td>49.89</td><td><b>37.85</b></td><td><b>0.55</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== IMAGE ============================== -->
+<section id="image" class="fl-section">
+  <p class="fl-kicker">2 &middot; Image challenges</p>
+  <h2 class="fl-h2">Overfitting and object-centric images</h2>
+  <p>
+    Even with long captions, ImageNet-only training faces two limitations. <b>Early overfitting:</b> with only 1.2M images,
+    latent-space models start to overfit after about 200k steps. <b>Limited compositionality:</b> ImageNet is object-centric,
+    so models struggle with spatial relations, attribute binding and multi-object scenes.
+  </p>
+  <p><b>Image augmentation (IA).</b> We study two augmentations:</p>
+  <ul class="fl-list">
+    <li><b>CutMix:</b> a smaller image from another class is pasted onto the original image, and the composite is re-captioned.
+      To avoid learning the sharp paste boundaries, CutMix images are only used at noise levels where the boundary is no longer visible.</li>
+    <li><b>Crop:</b> the model only sees a random local crop of the image tokens, with the crop coordinates added to the caption.
+      This helps decouple objects from their background.</li>
+  </ul>
+
+  <div class="fl-card">
+    <div class="t2i-legend"><span class="sw" style="background:var(--t2i-ta)"></span><span>TA</span><span class="sw" style="background:var(--t2i-ia)"></span><span>TA + IA</span></div>
+    <div class="t2i-three">
+      <div><h4>TextRIN-I</h4><div class="fl-chart" id="chart-overfit-0"></div></div>
+      <div><h4>SiT-I</h4><div class="fl-chart" id="chart-overfit-1"></div></div>
+      <div><h4>JiT-I</h4><div class="fl-chart" id="chart-overfit-2"></div></div>
+    </div>
+    <p class="fl-caption">GenEval score during training. Image augmentation delays or prevents overfitting for the latent-space models (TextRIN-I, SiT-I).
+      The pixel-space JiT-I does not overfit and does not benefit from it.</p>
+  </div>
+
+  <p>
+    Image augmentation helps the latent-space models, and SiT-I benefits the most: with CutMix, its GenEval jumps by <b>+10 points</b> (to 0.61), driven by
+    color attribution (+16) and two objects (+13), and ImageReward goes from &minus;0.12 to 0.22.
+    In contrast, the pixel-space JiT-I degrades slightly. We attribute this to the VAE of latent models, whose encoder absorbs the sharp,
+    locally unnatural CutMix boundaries; JiT-I models raw pixels and has no such filter.
+  </p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table t2i-grouped">
+      <thead>
+        <tr><th>Model</th><th>IA</th><th>GenEval &uarr;</th><th>Two obj. &uarr;</th><th>Position &uarr;</th><th>Col. attr. &uarr;</th><th>ImageReward &uarr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">DiT-I</td><td>&ndash;</td><td>0.55</td><td>0.61</td><td>0.28</td><td>0.33</td><td>0.18</td></tr>
+        <tr><td>Crop</td><td>0.54</td><td>0.56</td><td>0.22</td><td>0.33</td><td>0.12</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.58</b></td><td><b>0.67</b></td><td><b>0.30</b></td><td><b>0.35</b></td><td><b>0.26</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">TextRIN-I</td><td>&ndash;</td><td>0.55</td><td>0.60</td><td>0.26</td><td>0.35</td><td>0.22</td></tr>
+        <tr><td>Crop</td><td>0.54</td><td>0.61</td><td>0.23</td><td>0.33</td><td>&minus;0.10</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.57</b></td><td><b>0.68</b></td><td><b>0.35</b></td><td><b>0.36</b></td><td><b>0.30</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">SiT-I</td><td>&ndash;</td><td>0.51</td><td>0.56</td><td>0.25</td><td>0.24</td><td>&minus;0.12</td></tr>
+        <tr><td>Crop</td><td>0.59</td><td>0.66</td><td>0.28</td><td>0.39</td><td>0.07</td></tr>
+        <tr class="is-ours"><td>CutMix</td><td><b>0.61</b></td><td><b>0.69</b></td><td><b>0.34</b></td><td><b>0.40</b></td><td><b>0.22</b></td></tr>
+      </tbody>
+      <tbody>
+        <tr><td class="t2i-model" rowspan="3">JiT-I</td><td>&ndash;</td><td><b>0.54</b></td><td><b>0.62</b></td><td><b>0.24</b></td><td><b>0.29</b></td><td><b>&minus;0.01</b></td></tr>
+        <tr><td>Crop</td><td>0.51</td><td>0.53</td><td>0.20</td><td>0.26</td><td>&minus;0.09</td></tr>
+        <tr><td>CutMix</td><td>0.50</td><td>0.57</td><td>0.22</td><td>0.27</td><td>&minus;0.07</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Image augmentation also improves compositions. With TA only, the teddy bear sits awkwardly on the motorbike; with TA + IA it drives it.
+    The goat scene is better composed, and color attribution improves for the butterfly and the baseballs.</p>
+  <div class="t2i-pairs">
+    <div class="t2i-legend"><span class="sw" style="background:var(--t2i-ta)"></span><span>TA</span><span class="sw" style="background:var(--t2i-ia)"></span><span>TA + IA</span></div>
+    {% assign quali = "hedgehog|A hedgehog and an hourglass;teddybear|A teddy bear driving a motorbike;balls|Two beat-up baseballs and a yellow basketball;tea|A teapot and cookies on a table;goat|A goat on a mountain top;butterfly|Multicolored butterfly atop a vibrant tangerine" | split: ";" %}
+    <div class="t2i-pair-grid">
+    {% for q in quali %}{% assign parts = q | split: "|" %}
+      <figure class="t2i-pair">
+        <div class="t2i-pair-imgs">
+          <div><img src="{{ img }}/quali/ta_{{ parts[0] }}.jpg" alt="TA: {{ parts[1] }}" loading="lazy"><span class="t2i-tag t2i-tag-l">TA</span></div>
+          <div><img src="{{ img }}/quali/ia_{{ parts[0] }}.jpg" alt="TA + IA: {{ parts[1] }}" loading="lazy"><span class="t2i-tag t2i-tag-r">TA + IA</span></div>
+        </div>
+        <figcaption>&ldquo;{{ parts[1] }}&rdquo;</figcaption>
+      </figure>
+    {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== MIRO ============================== -->
+<section id="miro" class="fl-section">
+  <p class="fl-kicker">3 &middot; Conditioning with MIRO</p>
+  <h2 class="fl-h2">Learning preferences during pretraining</h2>
+  <p>
+    <a href="https://nicolas-dufour.github.io/miro/" target="_blank" rel="noopener">MIRO</a> conditions text-to-image pretraining on multiple reward
+    signals, so the model learns user preferences directly instead of relying on post-hoc reward fine-tuning. In our ImageNet-only setting,
+    MIRO improves SiT-I by <b>+5 GenEval points</b> (0.51 &rarr; 0.56) and ImageReward from <b>&minus;0.12</b> to <b>0.29</b>.
+    The gain is smaller than in the original paper with web-scale data, and smaller than what CutMix alone brings.
+  </p>
+  <div class="fl-card t2i-miro">
+    {% assign steps = "25000,50000,75000,100000,125000,150000,200000" | split: "," %}
+    <div class="t2i-miro-grid">
+      <span></span>
+      {% for st in steps %}<span class="t2i-miro-step" style="--k: {{ forloop.index0 }}">{{ st | divided_by: 1000 }}k</span>{% endfor %}
+      <span class="t2i-miro-row">SiT-I CutMix</span>
+      {% for st in steps %}<img class="t2i-miro-cell" style="--k: {{ forloop.index0 }}" src="{{ img }}/miro/sit_{{ st }}.jpg" alt="SiT-I CutMix, step {{ st }}" loading="lazy">{% endfor %}
+      <span class="t2i-miro-row">+ MIRO</span>
+      {% for st in steps %}<img class="t2i-miro-cell" style="--k: {{ forloop.index0 }}" src="{{ img }}/miro/miro_{{ st }}.jpg" alt="SiT-I CutMix + MIRO, step {{ st }}" loading="lazy">{% endfor %}
+    </div>
+    <p class="t2i-prompt">&ldquo;a fluffy corgi dog mid-flight with a red superhero cape&rdquo;</p>
+    <div class="t2i-miro-foot">
+      <span class="fl-caption">Training steps, left to right. Top: SiT-I CutMix. Bottom: with MIRO conditioning.</span>
+      <button class="fl-chip t2i-miro-replay">&#8635; Replay</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== SCALING ============================== -->
+<section id="scaling" class="fl-section">
+  <p class="fl-kicker">4 &middot; Scaling</p>
+  <h2 class="fl-h2">Bigger models and higher resolution</h2>
+  <p>
+    <b>Model size.</b> Scaling SiT-I CutMix from L to XL and H does not improve compositionality: GenEval stays flat, suggesting that the L model already extracts
+    most of what ImageNet offers for this benchmark. Aesthetic metrics improve slightly with size.
+    <b>Resolution.</b> Going to 512&sup2;, either by fine-tuning a 256&sup2; checkpoint (DiT-I) or training from scratch (SiT-I), improves both GenEval and aesthetics.
+  </p>
+  <div class="fl-two">
+    <div class="fl-card fl-table-wrap">
+      <h4>Model size (SiT-I CutMix, 256&sup2;)</h4>
+      <table class="fl-table fl-table-sm">
+        <thead><tr><th>Size</th><th>GenEval &uarr;</th><th>Aes. Score &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+        <tbody>
+          <tr><td>L</td><td><b>0.61</b></td><td>5.33</td><td>0.22</td></tr>
+          <tr><td>XL</td><td>0.58</td><td>5.33</td><td>0.23</td></tr>
+          <tr><td>H</td><td><b>0.61</b></td><td><b>5.37</b></td><td><b>0.30</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fl-card fl-table-wrap">
+      <h4>Resolution</h4>
+      <table class="fl-table fl-table-sm">
+        <thead><tr><th>Model</th><th>Res.</th><th>GenEval &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+        <tbody>
+          <tr><td class="t2i-model">DiT-I <small>(fine-tuned)</small></td><td>256&sup2;</td><td>0.58</td><td>0.26</td></tr>
+          <tr><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.61</b></td><td><b>0.40</b></td></tr>
+          <tr><td class="t2i-model">SiT-I <small>(from scratch)</small></td><td>256&sup2;</td><td>0.61</td><td>0.22</td></tr>
+          <tr><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.63</b></td><td><b>0.37</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">Putting everything together</h2>
+  <p>We combine the best ingredients into a single model: <b>SiT-H trained with CutMix and MIRO conditioning</b>. At 512&sup2;, it reaches
+    <b>0.67</b> on GenEval and an ImageReward of <b>0.73</b>.</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Res.</th><th>GenEval &uarr;</th><th>Two obj. &uarr;</th><th>Col. attr. &uarr;</th><th>PickScore &uarr;</th><th>HPSv2.1 &uarr;</th><th>ImageReward &uarr;</th></tr></thead>
+      <tbody>
+        <tr><td class="t2i-model">SiT-H CutMix + MIRO</td><td>256&sup2;</td><td>0.65</td><td>0.73</td><td>0.49</td><td>20.59</td><td>0.27</td><td>0.67</td></tr>
+        <tr class="is-ours"><td class="t2i-cont"></td><td>512&sup2;</td><td><b>0.67</b></td><td><b>0.82</b></td><td><b>0.52</b></td><td><b>20.84</b></td><td><b>0.28</b></td><td><b>0.73</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== SOTA ============================== -->
+<section id="sota" class="fl-section">
+  <p class="fl-kicker">5 &middot; Comparison with the state of the art</p>
+  <h2 class="fl-h2">GenEval</h2>
+  <p>Our best model reaches <b>0.67</b> overall, matching FLUX-dev and surpassing SANA-0.6 (0.64) and SD3 Medium (0.62), all trained on orders of magnitude more data.
+    It obtains the best Two Objects score (0.82), but falls behind on Counting.</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Size</th><th>#data</th><th>Overall &uarr;</th><th>One obj.</th><th>Two obj.</th><th>Count.</th><th>Col.</th><th>Pos.</th><th>Col. attr.</th></tr></thead>
+      <tbody>
+        <tr><td>SD v1.5</td><td>0.9B</td><td>5B+</td><td>0.43</td><td>0.97</td><td>0.38</td><td>0.35</td><td>0.76</td><td>0.04</td><td>0.06</td></tr>
+        <tr><td>PixArt-&alpha;</td><td>0.6B</td><td>25M</td><td>0.48</td><td>0.98</td><td>0.50</td><td>0.44</td><td>0.80</td><td>0.08</td><td>0.07</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(512)</small></td><td>0.6B</td><td>35M+</td><td>0.52</td><td>0.98</td><td>0.59</td><td>0.50</td><td>0.80</td><td>0.10</td><td>0.15</td></tr>
+        <tr><td>SD v2.1</td><td>0.9B</td><td>5B+</td><td>0.50</td><td>0.98</td><td>0.51</td><td>0.44</td><td>0.85</td><td>0.07</td><td>0.17</td></tr>
+        <tr><td>SDXL</td><td>3.5B</td><td>5B+</td><td>0.55</td><td>0.98</td><td>0.74</td><td>0.39</td><td>0.85</td><td>0.15</td><td>0.23</td></tr>
+        <tr><td>SD3 M <small>(512)</small></td><td>2B</td><td>1B+</td><td>0.62</td><td>0.98</td><td>0.74</td><td>0.63</td><td>0.67</td><td>0.34</td><td>0.36</td></tr>
+        <tr><td>SANA-0.6</td><td>0.6B</td><td>undiscl.</td><td>0.64</td><td><b>0.99</b></td><td>0.71</td><td>0.63</td><td><b>0.91</b></td><td>0.16</td><td>0.42</td></tr>
+        <tr><td>FLUX-dev</td><td>12B</td><td>undiscl.</td><td>0.67</td><td><b>0.99</b></td><td>0.81</td><td><b>0.79</b></td><td>0.74</td><td>0.20</td><td>0.47</td></tr>
+        <tr><td>MIRO</td><td>0.3B</td><td>18M</td><td><b>0.75</b></td><td>0.98</td><td>0.79</td><td>0.71</td><td>0.85</td><td><b>0.58</b></td><td><b>0.58</b></td></tr>
+        <tr class="is-ours"><td>Ours</td><td>1B</td><td><b>1.2M</b></td><td>0.67</td><td>0.98</td><td><b>0.82</b></td><td>0.47</td><td>0.85</td><td>0.36</td><td>0.52</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="fl-h2 fl-h2-gap">DPGBench</h2>
+  <p>On DPGBench, a more complex benchmark, our model reaches <b>81.2</b> overall, surpassing SDXL and PixArt-&Sigma; and matching Janus.
+    It trails FLUX-dev and SANA-0.6 by about 3 points but is the best on <em>Relation</em> (<b>93.0</b>).</p>
+  <div class="fl-card fl-table-wrap">
+    <table class="fl-table">
+      <thead><tr><th>Model</th><th>Overall &uarr;</th><th>Entity</th><th>Attribute</th><th>Relation</th><th>Other</th><th>Global</th></tr></thead>
+      <tbody>
+        <tr><td>SD v1.5</td><td>63.2</td><td>74.2</td><td>75.4</td><td>73.5</td><td>67.8</td><td>74.6</td></tr>
+        <tr><td>PixArt-&alpha;</td><td>71.1</td><td>79.3</td><td>78.6</td><td>82.6</td><td>77.0</td><td>75.0</td></tr>
+        <tr><td>SDXL</td><td>74.7</td><td>82.4</td><td>80.9</td><td>86.8</td><td>80.4</td><td>83.3</td></tr>
+        <tr><td>CAD</td><td>77.6</td><td>85.3</td><td>84.7</td><td>91.5</td><td>74.8</td><td>84.5</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(512)</small></td><td>79.5</td><td>87.1</td><td>86.5</td><td>84.0</td><td>86.1</td><td>87.5</td></tr>
+        <tr><td>Janus</td><td>79.7</td><td>87.4</td><td>87.7</td><td>85.5</td><td>86.4</td><td>82.3</td></tr>
+        <tr><td>PixArt-&Sigma; <small>(1024)</small></td><td>80.5</td><td>82.9</td><td><b>88.9</b></td><td>86.6</td><td>87.7</td><td>86.9</td></tr>
+        <tr><td>FLUX-dev</td><td>84.0</td><td>89.5</td><td>88.7</td><td>91.1</td><td>89.4</td><td>82.1</td></tr>
+        <tr><td>SD3 Medium</td><td>84.1</td><td><b>91.0</b></td><td>88.8</td><td>80.7</td><td>88.7</td><td><b>87.9</b></td></tr>
+        <tr><td>SANA-0.6</td><td><b>84.3</b></td><td>90.0</td><td>88.6</td><td>90.1</td><td><b>91.9</b></td><td>82.6</td></tr>
+        <tr class="is-ours"><td>Ours</td><td>81.2</td><td>88.4</td><td>86.4</td><td><b>93.0</b></td><td>76.0</td><td>82.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== GENERALISATION ============================== -->
+<section id="generalisation" class="fl-section">
+  <p class="fl-kicker">6 &middot; Generalization</p>
+  <h2 class="fl-h2">Beyond ImageNet's objects</h2>
+  <p>
+    Despite ImageNet's object-centric bias, our models compose complex scenes and approximate concepts never seen during training,
+    by combining patterns from training concepts. For example, the model creates a hybrid creature mixing a giraffe and a tortoise,
+    leveraging the text understanding of the language model that encodes the prompt.
+  </p>
+  <div class="t2i-gen">
+    <figure><img src="{{ img }}/gen/penguin_painting.jpg" alt="Penguin painting" loading="lazy"><figcaption>A penguin stands in a small art studio holding a paintbrush dipped in blue paint, working on a canvas mounted.</figcaption></figure>
+    <figure><img src="{{ img }}/gen/ipad.jpg" alt="iPad on a table" loading="lazy"><figcaption>An iPad Pro rests on a rustic wooden table. The tablet is positioned at a slight angle.</figcaption></figure>
+    <figure><img src="{{ img }}/gen/robot.jpg" alt="Robot" loading="lazy"><figcaption>A metallic robot standing with faint blue light eyes.</figcaption></figure>
+    <figure><img src="{{ img }}/gen/giraffe_turtle.jpg" alt="Giraffe-tortoise hybrid" loading="lazy"><figcaption>A hybrid creature with the body and shell of a tortoise and the head and neck of a giraffe.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================== GALLERY ============================== -->
+<section id="gallery" class="fl-section fl-bleed fl-gallery">
+  <p class="fl-kicker" style="text-align:center">Samples</p>
+  <h2 class="fl-h2" style="text-align:center">512&sup2; samples, trained only on ImageNet</h2>
+  <div class="fl-marquee">
+    <div class="fl-marquee-track">
+      {% for i in (1..20) %}<img src="{{ img }}/gallery/{{ i }}.jpg" alt="Generated sample {{ i }}" loading="lazy">{% endfor %}
+      {% for i in (1..20) %}<img src="{{ img }}/gallery/{{ i }}.jpg" alt="" aria-hidden="true" loading="lazy">{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BIBTEX ============================== -->
+<section id="bibtex" class="fl-section">
+  <h2 class="fl-h2">BibTeX</h2>
+<pre><code>@article{degeorge2025farimagenettexttoimagegeneration,
+  title   = {How far can we go with ImageNet for Text-to-Image generation?},
+  author  = {Degeorge, Lucas and Ghosh, Arijit and Dufour, Nicolas and
+             Picard, David and Kalogeiton, Vicky},
+  journal = {arXiv preprint arXiv:2502.21318},
+  year    = {2025}
+}</code></pre>
+
+  <h2 class="fl-h2 fl-h2-gap">Acknowledgments</h2>
+  <p>This work was granted access to the HPC resources of IDRIS under the allocation 2025-AD011015436 and 2025-AD011015594 made by GENCI, and by the SHARP ANR project ANR-23-PEIA-0008 funded in the context of the France 2030 program. The authors would like to thank Alexei A. Efros, Thibaut Loiseau, Yannis Siglidis, Yohann Perron, Louis Geist, Robin Courant and Sinisa Stekovic for their insightful comments, suggestions, and discussions.</p>
+</section>
+
+</div>

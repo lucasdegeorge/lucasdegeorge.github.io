@@ -83,3 +83,6 @@ dark_mode: true
 # RSS feed
 feed:
   path: feed.xml
+
+# Local preview: watch files by polling (avoids inotify watch-limit crashes)
+force_polling: true

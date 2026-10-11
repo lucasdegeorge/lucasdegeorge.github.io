@@ -1,0 +1,110 @@
+/* ===========================
+   Home page (index.md), same visual language as the project pages.
+   Loaded only on / (via page.extra_css). Static: no animations.
+   =========================== */
+
+.home {
+  --h-card: var(--bg-primary);
+  --h-soft: var(--bg-secondary);
+  --h-line: var(--border-color);
+  --h-muted: var(--text-secondary);
+  --h-accent: #d65c5c;
+}
+[data-theme="dark"] .home { --h-card: #212121; --h-accent: #f08a8a; }
+
+.home h1, .home h2, .home h3 { font-family: var(--font-sans); }
+.h-muted { color: var(--h-muted); font-size: 0.95rem; }
+
+/* ---------- Intro ---------- */
+.h-intro { display: grid; grid-template-columns: 170px 1fr; gap: 2rem; align-items: start; padding-top: 0.5rem; }
+.h-photo { width: 170px; height: 170px; border-radius: 50%; object-fit: cover; display: block; border: 1px solid var(--h-line); }
+.h-name { font-size: clamp(2rem, 4.5vw, 2.6rem); margin: 0.25rem 0 0.35rem; letter-spacing: -0.02em; }
+.h-role { font-family: var(--font-sans); color: var(--h-muted); margin: 0 0 0.9rem; }
+.h-social { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
+.h-social a {
+  width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--h-line); background: var(--h-soft); color: var(--text-primary) !important;
+}
+.h-social a:hover { border-color: var(--text-primary); }
+.h-social svg { fill: currentColor; }
+.h-bio p { font-size: 1.08rem; margin-bottom: 0.7rem; }
+
+/* ---------- Sections ---------- */
+.h-section { padding-top: 2.75rem; }
+.h-h2 {
+  font-size: 1.5rem; margin: 0 0 1rem; padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--text-primary); letter-spacing: -0.01em;
+}
+.h-h2-gap { margin-top: 2.75rem; }
+.h-year { font-size: 1.05rem; color: var(--h-muted); margin: 1.6rem 0 0.75rem; }
+
+/* ---------- News ---------- */
+.h-news { list-style: none; margin: 0; padding: 0; }
+.h-news li {
+  display: grid; grid-template-columns: 6.5rem 1fr; gap: 1rem;
+  padding: 0.7rem 0; border-bottom: 1px solid var(--h-line);
+}
+.h-news-date { font: 600 0.88rem var(--font-sans); color: var(--h-muted); padding-top: 0.15rem; white-space: nowrap; }
+.h-news-text { font-family: var(--font-sans); font-size: 0.97rem; }
+.h-news-text p { margin: 0; }
+.h-news-more { margin-top: 0.75rem; }
+.h-news-more summary {
+  display: inline-block; cursor: pointer; list-style: none;
+  font: 600 0.85rem var(--font-sans); padding: 0.4rem 0.95rem; border-radius: 999px;
+  border: 1px solid var(--h-line); background: var(--h-soft);
+}
+.h-news-more summary::-webkit-details-marker { display: none; }
+.h-news-more summary::after { content: " \25BE"; }
+.h-news-more[open] summary::after { content: " \25B4"; }
+.h-news-more[open] summary { margin-bottom: 0.25rem; }
+
+/* ---------- Publications ---------- */
+.h-pubs { display: grid; gap: 1rem; }
+.h-pub {
+  display: grid; grid-template-columns: 190px 1fr; gap: 1.25rem; align-items: start;
+  background: var(--h-card); border: 1px solid var(--h-line); border-radius: 14px; padding: 1rem;
+}
+.h-pubs-selected .h-pub { grid-template-columns: 240px 1fr; border-left: 4px solid var(--h-accent); }
+.h-pub-thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; display: block; background: var(--h-soft); }
+.h-pub-thumb.is-contain img { object-fit: contain; background: #fff; border: 1px solid var(--h-line); }
+.h-pub-title { font-size: 1.08rem; line-height: 1.35; margin: 0 0 0.4rem; }
+.h-pub-title a { color: var(--text-primary); }
+.h-pub-title a:hover { color: var(--accent-color); }
+.h-pub-authors { font-family: var(--font-sans); font-size: 0.9rem; color: var(--h-muted); margin: 0 0 0.3rem; line-height: 1.5; }
+.h-pub-authors strong { color: var(--text-primary); }
+.h-pub-authors a { color: var(--h-muted); text-decoration: underline; text-decoration-color: var(--h-line); text-underline-offset: 2px; }
+.h-pub-authors a:hover { color: var(--text-primary); }
+.h-pub-venue { font: italic 0.9rem var(--font-sans); margin: 0 0 0.7rem; }
+.h-pub-note { font-style: normal; color: var(--h-muted); font-size: 0.8rem; margin-left: 0.6rem; }
+.h-pub-links { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; }
+.h-pill {
+  font: 600 0.8rem var(--font-sans); padding: 0.28rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--h-line); background: var(--h-soft); color: var(--text-primary) !important;
+  text-decoration: none !important;
+}
+.h-pill:hover { border-color: var(--text-primary); }
+.h-pill-strong { background: var(--text-primary); color: var(--bg-primary) !important; border-color: var(--text-primary); }
+
+/* ---------- Misc (teaching, reviewer): same date column as News ---------- */
+.h-misc-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--h-muted); margin: 1.4rem 0 0.2rem; }
+.h-rows { list-style: none; margin: 0; padding: 0; font-family: var(--font-sans); }
+.h-rows li {
+  display: grid; grid-template-columns: 6.5rem 1fr; gap: 1rem; align-items: baseline;
+  padding: 0.7rem 0; border-bottom: 1px solid var(--h-line);
+}
+.h-rows-date { font-weight: 600; font-size: 0.88rem; color: var(--h-muted); white-space: nowrap; }
+.h-rows-main { display: block; font-weight: 600; font-size: 0.98rem; }
+.h-rows-sub { display: block; color: var(--h-muted); font-size: 0.88rem; margin-top: 0.1rem; }
+.h-venues { display: flex; flex-wrap: wrap; gap: 0.35rem 0; font-weight: 600; font-size: 0.98rem; }
+.h-venues > span:not(:last-child)::after { content: "\00B7"; color: var(--h-muted); font-weight: 400; margin: 0 0.6rem; }
+.h-award { font-style: normal; font-weight: 600; font-size: 0.78rem; color: var(--h-accent); margin-left: 0.35rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 680px) {
+  .h-intro { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+  .h-photo { width: 130px; height: 130px; margin: 0 auto; }
+  .h-social { justify-content: center; }
+  .h-bio { text-align: left; }
+  .h-pub, .h-pubs-selected .h-pub { grid-template-columns: 1fr; }
+  .h-news li, .h-rows li { grid-template-columns: 1fr; gap: 0.15rem; }
+}
