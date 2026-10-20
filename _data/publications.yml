@@ -22,8 +22,10 @@
   thumbnail: "/assets/images/publications/dino-forcing.jpg"
   thumbnail_fit: contain   # show the whole figure (wide diagram) instead of cropping it
   links:
+    project: "https://arijit-hub.github.io/projects/dino_forcing/"
     paper: "https://arxiv.org/pdf/2610.11751"
     code: "https://github.com/arijit-hub/dino_forcing"
+    model: "https://huggingface.co/arijitghosh/dino_forcing/tree/main"
 
 
 - title: "Balancing Frequencies and Pixels in Flow Matching"
